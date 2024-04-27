@@ -9,6 +9,9 @@ class DatabaseService:
         self.cursor = self.conn.cursor()
         self.create_tables()
 
+        if DatabaseService.instance is None:
+            DatabaseService.instance = self
+
     def get_instance(self):
         if self.instance is None:
             self.instance = DatabaseService()
@@ -110,13 +113,24 @@ class DatabaseService:
             print(e)
             return False
 
-    def select(self, table, columns, where=None):
+    def select_all(self, table, columns, where=None):
         columns = ', '.join(columns)
         if where:
             where = 'WHERE ' + where
         try:
             self.cursor.execute(f'SELECT {columns} FROM {table} {where}')
             return self.cursor.fetchall()
+        except Exception as e:
+            print(e)
+            return False
+
+    def select_one(self, table, columns, where=None):
+        columns = ', '.join(columns)
+        if where:
+            where = 'WHERE ' + where
+        try:
+            self.cursor.execute(f'SELECT {columns} FROM {table} {where}')
+            return self.cursor.fetchone()
         except Exception as e:
             print(e)
             return False
@@ -134,6 +148,15 @@ class DatabaseService:
     def delete(self, table, where):
         try:
             self.cursor.execute(f'DELETE FROM {table} WHERE {where}')
+            self.conn.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def flush(self, table):
+        try:
+            self.cursor.execute(f'DELETE FROM {table}')
             self.conn.commit()
             return True
         except Exception as e:
