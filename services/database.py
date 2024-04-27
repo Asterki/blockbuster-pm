@@ -45,7 +45,7 @@ class DatabaseService:
                     ''')
 
             self.cursor.execute('''
-                        CREATE TABLE IF NOT EXISTS users (
+                        CREATE TABLE IF NOT EXISTS clients (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             name TEXT NOT NULL,
                             phone_number TEXT NOT NULL,
@@ -131,6 +131,16 @@ class DatabaseService:
         try:
             self.cursor.execute(f'SELECT {columns} FROM {table} {where}')
             return self.cursor.fetchone()
+        except Exception as e:
+            print(e)
+            return False
+
+    def select_count(self, table, where=None, count=1):
+        if where:
+            where = 'WHERE ' + where
+        try:
+            self.cursor.execute(f'SELECT COUNT({count}) FROM {table} {where}')
+            return self.cursor.fetchone()[0]
         except Exception as e:
             print(e)
             return False
