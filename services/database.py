@@ -26,7 +26,8 @@ class DatabaseService:
                             hired_since TEXT NOT NULL,
                             admin BOOLEAN NOT NULL,
                             phone_number TEXT NOT NULL,
-                            movies_sold INTEGER NOT NULL
+                            movies_sold INTEGER NOT NULL,
+                            password TEXT NOT NULL
                         )
                     ''')
 

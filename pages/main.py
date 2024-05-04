@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class Main:
     def __init__(self):
         self.window = Tk()
@@ -14,6 +15,7 @@ class Main:
         self.button.pack()
 
         self.window.mainloop()
+
 
 if __name__ == '__main__':
     Main()
