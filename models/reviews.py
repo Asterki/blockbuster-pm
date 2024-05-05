@@ -2,8 +2,18 @@ from services.database import DatabaseService
 
 
 class ReviewModel:
+    instance = None
+
     def __init__(self):
         self.db = DatabaseService().get_instance()
+
+        if ReviewModel.instance is None:
+            ReviewModel.instance = self
+
+    def get_instance(self):
+        if self.instance is None:
+            self.instance = DatabaseService()
+        return self.instance
 
     def create_review(self, movie_id, user_id, rating, review):
         return self.db.insert('reviews', {

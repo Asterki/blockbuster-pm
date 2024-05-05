@@ -2,8 +2,18 @@ from services.database import DatabaseService
 
 
 class UserModel:
+    instance = None
+
     def __init__(self):
         self.db = DatabaseService().get_instance()
+
+        if UserModel.instance is None:
+            UserModel.instance = self
+
+    def get_instance(self):
+        if self.instance is None:
+            self.instance = DatabaseService()
+        return self.instance
 
     def create_user(self, name, hired_since, admin, phone_number, password, movies_sold):
         return self.db.insert('employees', {

@@ -2,8 +2,18 @@ from services.database import DatabaseService
 
 
 class InventoryModel:
+    instance = None
+
     def __init__(self):
         self.db = DatabaseService().get_instance()
+
+        if InventoryModel.instance is None:
+            InventoryModel.instance = self
+
+    def get_instance(self):
+        if self.instance is None:
+            self.instance = DatabaseService()
+        return self.instance
 
     def update_stock(self, movie_id, stock):
         self.db.update('inventory', {'stock': stock}, f'id = {movie_id}')
