@@ -50,7 +50,8 @@ class DatabaseService:
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             name TEXT NOT NULL,
                             phone_number TEXT NOT NULL,
-                            rentals INTEGER NOT NULL
+                            rentals INTEGER NOT NULL,
+                            banned BOOLEAN NOT NULL
                         )
                     ''')
 
@@ -173,6 +174,10 @@ class DatabaseService:
         except Exception as e:
             print(e)
             return False
+
+    def get_headers(self, table):
+        self.cursor.execute(f'PRAGMA table_info({table})')
+        return [header[1] for header in self.cursor.fetchall()]
 
     def close(self):
         self.conn.close()
