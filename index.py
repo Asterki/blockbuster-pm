@@ -1,12 +1,14 @@
-from models.inventory import InventoryModel
+from tkinter import *
+
+from pages.login import LoginPage
+from models.users import UserModel
 
 
-class App:
+class Main:
     def __init__(self):
-        self.inventory = InventoryModel()
+        # UserModel().get_instance().create_user('admin', '2021-01-01', True, '123456789', 'admin', 0)
+        LoginPage().show_window()
 
-        self.inventory.export_to_excel('users')
 
-
-if __name__ == "__main__":
-    App()
+if __name__ == '__main__':
+    Main()

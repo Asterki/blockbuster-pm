@@ -1,5 +1,4 @@
 from services.database import DatabaseService
-import pandas as pd
 
 
 class InventoryModel:
@@ -24,30 +23,3 @@ class InventoryModel:
 
     def get_all_movies(self):
         return self.db.select_all('inventory', '*')
-
-    def export_to_excel(self, table_name, file_path):
-        try:
-            headers = self.db.get_headers(table_name)
-            table = self.db.select_all(table_name, '*')
-
-            df = pd.DataFrame(table)
-            df.columns = headers
-            df.to_excel(file_path, index=False)
-            return df
-        except Exception as e:
-            print(e)
-            return False
-
-    def import_from_excel(self, table_name, file_path):
-        try:
-            df = pd.read_excel(file_path)
-            headers = df.columns.tolist()
-            data = df.values.tolist()
-
-            for row in data:
-                self.db.insert(table_name, dict(zip(headers, row)))
-
-            return True
-        except Exception as e:
-            print(e)
-            return False

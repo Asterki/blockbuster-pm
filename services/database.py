@@ -1,4 +1,5 @@
 import sqlite3
+import pandas as pd
 
 
 class DatabaseService:
@@ -131,7 +132,7 @@ class DatabaseService:
         if where:
             where = 'WHERE ' + where
         try:
-            self.cursor.execute(f'SELECT {columns} FROM {table} {where}')
+            self.cursor.execute(f"SELECT {columns} FROM {table} {where}")
             return self.cursor.fetchone()
         except Exception as e:
             print(e)
@@ -178,6 +179,33 @@ class DatabaseService:
     def get_headers(self, table):
         self.cursor.execute(f'PRAGMA table_info({table})')
         return [header[1] for header in self.cursor.fetchall()]
+
+    def export_to_excel(self, table_name, file_path):
+        try:
+            headers = self.get_headers(table_name)
+            table = self.select_all(table_name, '*')
+
+            df = pd.DataFrame(table)
+            df.columns = headers
+            df.to_excel(file_path, index=False)
+            return df
+        except Exception as e:
+            print(e)
+            return False
+
+    def import_from_excel(self, table_name, file_path):
+        try:
+            df = pd.read_excel(file_path)
+            headers = df.columns.tolist()
+            data = df.values.tolist()
+
+            for row in data:
+                self.insert(table_name, dict(zip(headers, row)))
+
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
     def close(self):
         self.conn.close()
