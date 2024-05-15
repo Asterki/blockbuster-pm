@@ -1,4 +1,5 @@
 from services.database import DatabaseService
+from services.logger import LoggerService
 
 
 class UserModel:
@@ -16,6 +17,8 @@ class UserModel:
         return self.instance
 
     def create_user(self, name, hired_since, admin, phone_number, password, movies_sold):
+        LoggerService().get_instance().log("admin", 'User created')
+
         return self.db.insert('employees', {
             'name': name,
             'hired_since': hired_since,
@@ -35,6 +38,8 @@ class UserModel:
         self.db.delete('employees', f'id = {_id}')
 
     def update_user(self, _id, name, hired_since, admin, phone_number, movies_sold):
+        LoggerService().get_instance().log("admin", 'User updated')
+
         self.db.update('employees', {
             'name': name,
             'hired_since': hired_since,

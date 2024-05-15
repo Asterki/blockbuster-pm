@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 
 from models.users import UserModel
+from services.logger import LoggerService
 
 from pages.main import Main as MainPage
 
@@ -45,6 +46,8 @@ class LoginPage:
             messagebox.showerror('Error', 'Invalid username or password')
             self.password.set("")
         else:
+            LoggerService().get_instance().log(username, 'Logged in')
+
             messagebox.showinfo('Success', 'Login successful')
             self.window.destroy()
             from pages.main import Main
