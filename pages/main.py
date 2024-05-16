@@ -18,7 +18,3 @@ class Main:
 
     def show_window(self):
         self.window.mainloop()
-
-
-if __name__ == '__main__':
-    Main()

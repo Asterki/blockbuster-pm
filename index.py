@@ -1,6 +1,7 @@
 from tkinter import *
 
 from pages.login import LoginPage
+from pages.admin.logs import AdminLogs
 from models.users import UserModel
 
 
@@ -11,4 +12,4 @@ class Main:
 
 
 if __name__ == '__main__':
-    Main()
+    AdminLogs()
