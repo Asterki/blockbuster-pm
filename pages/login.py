@@ -4,8 +4,6 @@ from tkinter import messagebox
 from models.users import UserModel
 from services.logger import LoggerService
 
-from pages.main import Main as MainPage
-
 
 class LoginPage:
     def __init__(self):
@@ -50,5 +48,10 @@ class LoginPage:
 
             messagebox.showinfo('Success', 'Login successful')
             self.window.destroy()
-            from pages.main import Main
-            MainPage().show_window()
+
+            if username == 'admin':
+                from pages.admin.index import AdminMain
+                AdminMain().show_window()
+            else:
+                from pages.main import Main as MainPage
+                MainPage().show_window()

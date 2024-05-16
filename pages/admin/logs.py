@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+
 from services.logger import LoggerService
 
 
@@ -24,7 +25,7 @@ class AdminLogs:
         self.treeview.heading('Action', text='Action', anchor=W)
         self.treeview.heading('Date', text='Date', anchor=W)
 
-        self.button = Button(self.window, text='Go Back', font=('Arial', 15))
+        self.button = Button(self.window, text='Go Back', font=('Arial', 15), command=self.go_back)
         self.button.pack()
 
         self.get_and_show_logs()
@@ -38,6 +39,7 @@ class AdminLogs:
     def show_window(self):
         self.window.mainloop()
 
-
-if __name__ == '__main__':
-    AdminLogs()
+    def go_back(self):
+        from pages.admin.index import AdminMain
+        self.window.destroy()
+        AdminMain().show_window()
