@@ -34,7 +34,7 @@ class AdminLogs:
     def get_and_show_logs(self):
         logs = LoggerService().get_instance().get_logs()
         for log in list(logs):
-            self.treeview.insert(parent='', index=0, iid=0, text='', values=(log[1], log[2], log[3]))
+            self.treeview.insert('', 'end', text='', values=(log[1], log[2], log[3]))
 
     def show_window(self):
         self.window.mainloop()
