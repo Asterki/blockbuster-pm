@@ -1,6 +1,6 @@
 from tkinter import *
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import messagebox, ttk, simpledialog
+from datetime import datetime
 
 from models.users import UserModel
 
@@ -44,12 +44,18 @@ class AdminEmployees:
         self.update_button = Button(self.window, text='Update', font=('Arial', 15), command=self.update_user)
         self.update_button.grid(row=2, column=1, columnspan=1)
 
+        self.create_button = Button(self.window, text='Create', font=('Arial', 15), command=self.create_user)
+        self.create_button.grid(row=3, column=1, columnspan=1)
+
         self.get_and_show_users()
         self.window.mainloop()
 
     def get_and_show_users(self):
         users = UserModel().get_instance().get_all_users()
-        print(users)
+
+        for i in self.treeview.get_children():
+            self.treeview.delete(i)
+
         for user in list(users):
             self.treeview.insert('', 'end', text='', values=(user[0], user[1], user[2], user[3], user[4], user[5]))
 
@@ -67,6 +73,24 @@ class AdminEmployees:
                 self.treeview.delete(selected_item)
 
                 messagebox.showinfo('Success', 'User deleted successfully')
+
+    def create_user(self):
+        # Get the user input
+        username = simpledialog.askstring("Username", "Enter username")
+        password = simpledialog.askstring("Password", "Enter password")
+        phone_number = simpledialog.askstring("Phone Number", "Enter phone number")
+        is_admin = messagebox.askyesno("Is Admin", "Is this user an admin?")
+        user_created = datetime.now().strftime('%Y-%m-%d')
+
+        # Verifications
+        if UserModel().get_instance().get_user_by_name(username):
+            messagebox.showerror('Error', 'User already exists')
+        elif not username or not password or not phone_number:
+            messagebox.showerror('Error', 'All fields are required')
+        else:
+            UserModel().get_instance().create_user(username, user_created, is_admin, phone_number, password, 0)
+            messagebox.showinfo('Success', 'User created successfully')
+            self.get_and_show_users()
 
     def update_user(self):
         selected_item = self.treeview.selection()

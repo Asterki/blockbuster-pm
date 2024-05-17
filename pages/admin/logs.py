@@ -1,7 +1,9 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, filedialog, messagebox
+import os
 
 from services.logger import LoggerService
+from services.database import DatabaseService
 
 
 class AdminLogs:
@@ -28,6 +30,9 @@ class AdminLogs:
         self.button = Button(self.window, text='Go Back', font=('Arial', 15), command=self.go_back)
         self.button.pack()
 
+        self.export_button = Button(self.window, text='Export Logs', font=('Arial', 15), command=self.export_logs)
+        self.export_button.pack()
+
         self.get_and_show_logs()
         self.window.mainloop()
 
@@ -38,6 +43,19 @@ class AdminLogs:
 
     def show_window(self):
         self.window.mainloop()
+
+    @staticmethod
+    def export_logs():
+        path = filedialog.askdirectory()  # Ask user to select a folder.
+
+        if not all(path):
+            file_path = os.path.join(path, 'logs.xlsx')
+            DatabaseService().get_instance().export_to_excel('logs', file_path)
+
+            if os.path.exists(file_path):
+                messagebox.showinfo('Success', 'Logs exported successfully')
+            else:
+                messagebox.showerror('Error', 'Logs could not be exported')
 
     def go_back(self):
         from pages.admin.index import AdminMain

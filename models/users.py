@@ -31,6 +31,9 @@ class UserModel:
     def get_user(self, _id):
         return self.db.select_one('employees', '*', f'id = {_id}')
 
+    def get_user_by_name(self, name):
+        return self.db.select_one('employees', '*', f"name = '{name}'")
+
     def get_all_users(self):
         return self.db.select_all('employees', '*')
 
