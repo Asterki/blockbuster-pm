@@ -39,3 +39,4 @@ class AdminMain:
 
         self.window.destroy()
         AdminEmployees().show_window()
+

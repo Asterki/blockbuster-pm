@@ -77,6 +77,12 @@ class AdminEmployees:
         self.window.columnconfigure(0, weight=1)
         self.window.columnconfigure(1, weight=1)
 
+        self.menu = Menu(self.window)
+        self.menu.add_command(label='Logs', command=self.go_to_logs)
+        self.menu.add_command(label='Movies', command=self.go_to_movies)
+        self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
+        self.window.config(menu=self.menu)
+
         self.treeview = ttk.Treeview(self.window)
         self.treeview.grid(row=0, column=0, columnspan=1, rowspan=6)
 
@@ -97,7 +103,7 @@ class AdminEmployees:
         self.treeview.heading('Phone Number', text='Phone Number', anchor=W)
         self.treeview.heading('Movies Sold', text='Movies Sold', anchor=W)
 
-        self.button = Button(self.window, text='Go Back', font=('Arial', 15), command=self.go_back)
+        self.button = Button(self.window, text='Go Back', font=('Arial', 15), command=self.go_to_admin)
         self.button.grid(row=0, column=1, columnspan=1)
 
         self.delete_button = Button(self.window, text='Delete', font=('Arial', 15), command=self.delete_user)
@@ -171,7 +177,17 @@ class AdminEmployees:
     def show_window(self):
         self.window.mainloop()
 
-    def go_back(self):
+    def go_to_admin(self):
         from pages.admin.index import AdminMain
         self.window.destroy()
         AdminMain().show_window()
+
+    def go_to_logs(self):
+        from pages.admin.logs import AdminLogs
+        self.window.destroy()
+        AdminLogs().show_window()
+
+    def go_to_movies(self):
+        from pages.admin.movies import AdminMovies
+        self.window.destroy()
+        AdminMovies().show_window()
