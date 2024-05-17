@@ -1,14 +1,14 @@
 from services.database import DatabaseService
 
 
-class MoviesModel:
+class MovieModel:
     instance = None
 
     def __init__(self):
         self.db = DatabaseService().get_instance()
 
-        if MoviesModel.instance is None:
-            MoviesModel.instance = self
+        if MovieModel.instance is None:
+            MovieModel.instance = self
 
     def get_instance(self):
         if self.instance is None:
@@ -59,7 +59,7 @@ class MoviesModel:
 
     def get_movies_by_price(self, price):
         return self.db.select_all('movies', '*', f'price = {price}')
-    
+
     def get_movies_by_price_month(self, price_month):
         return self.db.select_all('movies', '*', f'price_month = {price_month}')
 

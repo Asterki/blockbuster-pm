@@ -1,8 +1,13 @@
 from tkinter import *
 
 from pages.login import LoginPage
-from pages.admin.employees import AdminEmployees
 from models.users import UserModel
+
+import pandas as pd
+import random
+import json
+
+from models.movies import MovieModel
 
 
 class Main:
@@ -28,5 +33,11 @@ class Main:
 
 
 if __name__ == '__main__':
-    # UserModel().get_instance().create_user('adm23in', '2021-01-01', True, '123456789', 'adm23in', 0)
-    AdminEmployees().show_window()
+    if input("Do you wish to preload movies? (y/n): ") == 'y':
+        df = pd.read_csv('tmdb_5000_movies.csv')
+        for index, row in df.iterrows():
+            MovieModel().get_instance().create_movie(row['title'], row['overview'], row['release_date'], row['genres'],
+                                                     row['director'], random.randint(1, 10), random.randint(1, 10),
+                                                     random.randint(1, 10))
+
+    LoginPage().show_window()
