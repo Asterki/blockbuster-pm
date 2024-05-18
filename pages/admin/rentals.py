@@ -11,7 +11,7 @@ class AdminRentals:
         self.window = Tk()
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
-        self.window.resizable(False, False)
+        self.window.attributes('-zoomed', True)
 
         self.menu = Menu(self.window)
         self.menu.add_command(label='Logs', command=self.go_to_logs)

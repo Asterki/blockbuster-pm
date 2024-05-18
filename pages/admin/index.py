@@ -6,7 +6,7 @@ class AdminMain:
         self.window = Tk()
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
-        self.window.resizable(False, False)
+        self.window.attributes('-zoomed', True)
 
         self.label = Label(self.window, text='Welcome to Movie Rental Admin Centre', font=('Arial', 20))
         self.label.pack()
