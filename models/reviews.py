@@ -1,24 +1,24 @@
 from services.database import DatabaseService
 
 
-class ReviewModel:
+class RentalsModel:
     instance = None
 
     def __init__(self):
         self.db = DatabaseService().get_instance()
 
-        if ReviewModel.instance is None:
-            ReviewModel.instance = self
+        if RentalsModel.instance is None:
+            RentalsModel.instance = self
 
     def get_instance(self):
         if self.instance is None:
             self.instance = DatabaseService()
         return self.instance
 
-    def create_review(self, movie_id, user_id, rating, review):
+    def create_review(self, user_id, movie_id, rating, review):
         return self.db.insert('reviews', {
-            'movie_id': movie_id,
             'user_id': user_id,
+            'movie_id': movie_id,
             'rating': rating,
             'review': review
         })
@@ -32,10 +32,18 @@ class ReviewModel:
     def delete_review(self, _id):
         self.db.delete('reviews', f'id = {_id}')
 
-    def update_review(self, _id, movie_id, user_id, rating, review):
+    def update_review(self, _id, user_id, movie_id, rating, review):
         self.db.update('reviews', {
-            'movie_id': movie_id,
             'user_id': user_id,
+            'movie_id': movie_id,
             'rating': rating,
             'review': review
         }, f'id = {_id}')
+
+    def get_reviews_by_user(self, user_id):
+        return self.db.select_all('reviews', '*', f'user_id = {user_id}')
+
+    def get_reviews_by_movie(self, movie_id, rating=None):
+        return self.db.select_all('reviews', '*', f'movie_id = {movie_id} AND rating = {rating}')
+
+
