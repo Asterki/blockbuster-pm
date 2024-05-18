@@ -84,7 +84,7 @@ class AdminEmployees:
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
-        self.title = Label(self.window, text='Employees', font=('Arial', 20))
+        self.title = Label(self.window, text='Employees', font=('Arial', 20), pady=20)
         self.title.grid(row=0, column=0, columnspan=12)
 
         self.treeview = ttk.Treeview(self.window)

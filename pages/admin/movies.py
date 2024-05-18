@@ -15,8 +15,9 @@ class AdminMovies:
         self.window.geometry('800x500')
         self.window.attributes('-zoomed', True)
 
-        self.window.columnconfigure(0, weight=1)
-        self.window.columnconfigure(1, weight=1)
+        # Grid configuration
+        for i in range(12):
+            self.window.columnconfigure(i, weight=1)
 
         self.menu = Menu(self.window)
         self.menu.add_command(label="Logs", command=self.go_to_logs)
@@ -24,11 +25,11 @@ class AdminMovies:
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
-        self.title = Label(self.window, text='Movies', font=('Arial', 20))
-        self.title.grid(row=0, column=0, columnspan=6)
+        self.title = Label(self.window, text='Movies', font=('Arial', 20), pady=20)
+        self.title.grid(row=0, column=0, columnspan=12)
 
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.grid(row=1, column=0, columnspan=6)
+        self.treeview.grid(row=1, column=1, columnspan=7, rowspan=6, sticky=(W, E))
 
         self.treeview['columns'] = ('Title', 'Overview', 'Release Date', 'Genres', 'Director', 'Rating', 'Votes',
                                     'Revenue')
@@ -56,36 +57,26 @@ class AdminMovies:
 
         self.page = 0
 
-        Button(self.window, text='Next', command=self.next_page).grid(row=2, column=1, sticky=W)
-        Button(self.window, text='Previous', command=self.previous_page).grid(row=2, column=0, sticky=E)
+        Button(self.window, text='Next', command=self.next_page).grid(row=2, column=10, sticky=(W, E))
+        Button(self.window, text='Previous', command=self.previous_page).grid(row=3, column=10, sticky=(W, E))
+
+        # Movie actions
+        Button(self.window, text='Update').grid(row=7, column=10, sticky=(W, E))
+        Button(self.window, text='Create').grid(row=8, column=10, sticky=(W, E))
+        Button(self.window, text='Delete').grid(row=9, column=10, sticky=(W, E))
 
         self.lblPage = Label(self.window, text="Page: 1")
-        self.lblPage.grid(row=3, column=0, columnspan=2, sticky=NSEW)
+        self.lblPage.grid(row=4, column=10, sticky=(W, E))
 
         # Movie info
         self.lblTitle = Label(self.window, text="", font=('Arial', 20), wraplength=500, justify=CENTER)
-        self.lblTitle.grid(row=4, column=0, sticky=W)
+        self.lblTitle.grid(row=10, column=1, sticky=(W,E), columnspan=12)
 
-        self.lblOverview = Label(self.window, text="", font=('Arial', 15), wraplength=500, justify=CENTER)
-        self.lblOverview.grid(row=5, column=0, sticky=W)
+        self.lblOverview = Label(self.window, text="", font=('Arial', 15), wraplength=500)
+        self.lblOverview.grid(row=12, column=1, sticky=(W,E), columnspan=12)
 
-        self.lblReleaseDate = Label(self.window, text="")
-        self.lblReleaseDate.grid(row=4, column=1, sticky=W)
-
-        self.lblGenres = Label(self.window, text="")
-        self.lblGenres.grid(row=5, column=1, sticky=W)
-
-        self.lblDirector = Label(self.window, text="")
-        self.lblDirector.grid(row=6, column=1, sticky=W)
-
-        self.lblRating = Label(self.window, text="")
-        self.lblRating.grid(row=7, column=1, sticky=W)
-
-        self.lblVotes = Label(self.window, text="")
-        self.lblVotes.grid(row=8, column=1, sticky=W)
-
-        self.lblRevenue = Label(self.window, text="")
-        self.lblRevenue.grid(row=9, column=1, sticky=W)
+        self.lblOtherInfo = Label(self.window, text="Other Info", font=('Arial', 13), wraplength=500, pady=10)
+        self.lblOtherInfo.grid(row=11, column=1, sticky=(W,E), columnspan=12)
 
         self.get_and_show_movies()
         self.window.mainloop()
@@ -95,12 +86,9 @@ class AdminMovies:
 
         self.lblTitle.config(text="Title: " + selected_item[0])
         self.lblOverview.config(text="Overview: " + selected_item[1])
-        self.lblReleaseDate.config(text="Release Date: " + str(selected_item[2]))
-        self.lblGenres.config(text="Genres: " + selected_item[3])
-        self.lblDirector.config(text="Director: " + selected_item[4])
-        self.lblRating.config(text="Rating: " + str(selected_item[5]))
-        self.lblVotes.config(text="Votes: " + str(selected_item[6]))
-        self.lblRevenue.config(text="Revenue: " + str(selected_item[7]))
+        self.lblOtherInfo.config(text="Release Date: " + str(selected_item[2]) + "\nGenres: " + selected_item[3] +
+                                    "\nDirector: " + selected_item[4] + "\nRating: " + str(selected_item[5]) +
+                                    "\nVotes: " + str(selected_item[6]) + "\nRevenue: " + str(selected_item[7]))
 
     def get_and_show_movies(self):
         # delete current movies

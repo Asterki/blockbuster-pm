@@ -13,17 +13,21 @@ class AdminLogs:
         self.window.geometry('500x500')
         self.window.attributes('-zoomed', True)
 
+        # Grid configuration
+        for i in range(12):
+            self.window.columnconfigure(i, weight=1)
+
         self.menu = Menu(self.window)
         self.menu.add_command(label="Movies", command=self.go_to_movies)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
-        self.title = Label(self.window, text='Logs', font=('Arial', 20))
-        self.title.pack()
+        self.title = Label(self.window, text='Logs', font=('Arial', 20), pady=20)
+        self.title.grid(row=0, column=0, columnspan=12, sticky=(W, E))
 
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.pack()
+        self.treeview.grid(row=1, column=1, columnspan=7, sticky=(W, E, N, S))
 
         self.treeview['columns'] = ('Username', 'Action', 'Date')
         self.treeview.column('#0', width=0, stretch=NO)
@@ -37,7 +41,7 @@ class AdminLogs:
         self.treeview.heading('Date', text='Date', anchor=W)
 
         self.export_button = Button(self.window, text='Export Logs', font=('Arial', 15), command=self.export_logs)
-        self.export_button.pack()
+        self.export_button.grid(row=1, column=9, columnspan=2, sticky=(W, E, N))
 
         self.get_and_show_logs()
         self.window.mainloop()
