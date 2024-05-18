@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 
-from models.users import UserModel
+from models.employees import UserModel
 from services.logger import LoggerService
 
 

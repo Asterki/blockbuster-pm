@@ -1,7 +1,7 @@
 from tkinter import *
 
 from pages.login import LoginPage
-from models.users import UserModel
+from models.employees import UserModel
 
 import pandas as pd
 import random

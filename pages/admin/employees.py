@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox, ttk, simpledialog
 from datetime import datetime
 
-from models.users import UserModel
+from models.employees import UserModel
 
 
 class UpdateUserWindow:
