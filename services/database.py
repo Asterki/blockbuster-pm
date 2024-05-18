@@ -138,12 +138,12 @@ class DatabaseService:
             print(e)
             return False
 
-    def select_count(self, table, where=None, count=1):
+    def select_count(self, table, where=None, count=1, offset=0):
         if where:
             where = 'WHERE ' + where
         try:
-            self.cursor.execute(f'SELECT COUNT({count}) FROM {table} {where}')
-            return self.cursor.fetchone()[0]
+            self.cursor.execute(f'SELECT * FROM {table} {where} LIMIT {count} OFFSET {offset}')
+            return self.cursor.fetchall()
         except Exception as e:
             print(e)
             return False

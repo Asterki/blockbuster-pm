@@ -83,8 +83,11 @@ class AdminEmployees:
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
+        self.title = Label(self.window, text='Employees', font=('Arial', 20))
+        self.title.grid(row=0, column=0, columnspan=6)
+
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.grid(row=0, column=0, columnspan=1, rowspan=6)
+        self.treeview.grid(row=1, column=0, columnspan=1, rowspan=6)
 
         self.treeview['columns'] = ('ID', 'Name', 'Hired Since', 'Is Admin', 'Phone Number', 'Movies Sold')
         self.treeview.column('#0', width=0, stretch=NO)
@@ -103,17 +106,14 @@ class AdminEmployees:
         self.treeview.heading('Phone Number', text='Phone Number', anchor=W)
         self.treeview.heading('Movies Sold', text='Movies Sold', anchor=W)
 
-        self.button = Button(self.window, text='Go Back', font=('Arial', 15), command=self.go_to_admin)
-        self.button.grid(row=0, column=1, columnspan=1)
-
         self.delete_button = Button(self.window, text='Delete', font=('Arial', 15), command=self.delete_user)
-        self.delete_button.grid(row=1, column=1, columnspan=1)
+        self.delete_button.grid(row=2, column=1, columnspan=1)
 
         self.update_button = Button(self.window, text='Update', font=('Arial', 15), command=self.update_user)
-        self.update_button.grid(row=2, column=1, columnspan=1)
+        self.update_button.grid(row=3, column=1, columnspan=1)
 
         self.create_button = Button(self.window, text='Create', font=('Arial', 15), command=self.create_user)
-        self.create_button.grid(row=3, column=1, columnspan=1)
+        self.create_button.grid(row=4, column=1, columnspan=1)
 
         self.get_and_show_users()
         self.window.mainloop()
@@ -130,7 +130,7 @@ class AdminEmployees:
     def delete_user(self):
         selected_item = self.treeview.selection()
 
-        if not all(selected_item):
+        if all(selected_item):
             user_id = self.treeview.item(selected_item)['values'][0]
             username = self.treeview.item(selected_item)['values'][1]
 
@@ -168,7 +168,7 @@ class AdminEmployees:
     def update_user(self):
         selected_item = self.treeview.selection()
 
-        if not all(selected_item):
+        if all(selected_item):
             user_id = self.treeview.item(selected_item)['values'][0]
             UpdateUserWindow(user_id)
         else:

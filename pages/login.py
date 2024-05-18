@@ -49,7 +49,7 @@ class LoginPage:
             messagebox.showinfo('Success', 'Login successful')
             self.window.destroy()
 
-            if result[3] == 'True': # Check if the user is an admin
+            if result[3] == 'True':  # Check if the user is an admin
                 from pages.admin.index import AdminMain
                 AdminMain().show_window()
             else:

@@ -19,6 +19,9 @@ class AdminLogs:
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
+        self.title = Label(self.window, text='Logs', font=('Arial', 20))
+        self.title.pack()
+
         self.treeview = ttk.Treeview(self.window)
         self.treeview.pack()
 
@@ -32,9 +35,6 @@ class AdminLogs:
         self.treeview.heading('Username', text='Username', anchor=W)
         self.treeview.heading('Action', text='Action', anchor=W)
         self.treeview.heading('Date', text='Date', anchor=W)
-
-        self.button = Button(self.window, text='Go Back', font=('Arial', 15), command=self.go_to_admin)
-        self.button.pack()
 
         self.export_button = Button(self.window, text='Export Logs', font=('Arial', 15), command=self.export_logs)
         self.export_button.pack()
@@ -54,7 +54,7 @@ class AdminLogs:
     def export_logs():
         path = filedialog.askdirectory()  # Ask user to select a folder.
 
-        if not all(path):
+        if all(path):
             file_path = os.path.join(path, 'logs.xlsx')
             DatabaseService().get_instance().export_to_excel('logs', file_path)
 

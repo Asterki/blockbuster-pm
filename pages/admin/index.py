@@ -17,10 +17,10 @@ class AdminMain:
         self.button = Button(self.window, text='See Users', font=('Arial', 15), command=self.go_to_employees)
         self.button.pack()
 
-        self.button = Button(self.window, text='See Movies', font=('Arial', 15))
+        self.button = Button(self.window, text='See Movies', font=('Arial', 15), command=self.go_to_movies)
         self.button.pack()
 
-        self.button = Button(self.window, text='See Rentals', font=('Arial', 15))
+        self.button = Button(self.window, text='See Rentals', font=('Arial', 15), command=self.go_to_rentals)
         self.button.pack()
 
         self.window.mainloop()
@@ -40,3 +40,14 @@ class AdminMain:
         self.window.destroy()
         AdminEmployees().show_window()
 
+    def go_to_rentals(self):
+        from pages.admin.rentals import AdminRentals
+
+        self.window.destroy()
+        AdminRentals().show_window()
+
+    def go_to_movies(self):
+        from pages.admin.movies import AdminMovies
+
+        self.window.destroy()
+        AdminMovies().show_window()

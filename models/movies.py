@@ -66,5 +66,5 @@ class MovieModel:
     def get_movies_by_year(self, year):
         return self.db.select_all('movies', '*', f'year = {year}')
 
-    def get_movies_by_title(self, title):
-        return self.db.select_all('movies', '*', f'title = {title}')
+    def get_movie_count(self, count, offset):
+        return self.db.select_count('movies', count=count, offset=offset)
