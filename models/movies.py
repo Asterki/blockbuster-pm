@@ -48,6 +48,9 @@ class MovieModel:
             'price': price
         }, f'id = {_id}')
 
+    def find_movie(self, title):
+        return self.db.select_all('movies', '*', f"LOWER(title) LIKE LOWER('%{title}%');")
+
     def get_movies_by_genre(self, genre):
         return self.db.select_all('movies', '*', f'genre = {genre}')
 
