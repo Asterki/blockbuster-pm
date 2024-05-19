@@ -1,6 +1,5 @@
 from tkinter import *
-from tkinter import ttk, filedialog, messagebox
-import os
+from tkinter import ttk, messagebox, simpledialog
 
 from models.movies import MovieModel
 
@@ -225,7 +224,21 @@ class AdminMovies:
         UpdateMovieWindow(movie_id)
 
     def create_movie(self):
-        pass
+        name = simpledialog.askstring('Create Movie', 'Enter movie name')
+        overview = simpledialog.askstring('Create Movie', 'Enter movie overview')
+        release_date = simpledialog.askinteger('Create Movie', 'Enter movie release date')
+        genres = simpledialog.askstring('Create Movie', 'Enter movie genres')
+        director = simpledialog.askstring('Create Movie', 'Enter movie director')
+        rating = simpledialog.askinteger('Create Movie', 'Enter movie rating')
+        price = simpledialog.askinteger('Create Movie', 'Enter movie price')
+
+        if not name or not overview or not release_date or not genres or not director or not rating or not price:
+            messagebox.showerror('Error', 'All fields are required')
+            return
+
+        MovieModel().get_instance().create_movie(name, overview, release_date, genres, director, rating, price)
+        self.get_and_show_movies()
+        messagebox.showinfo('Success', 'Movie created successfully')
 
     def delete_movie(self):
         selected_item = self.treeview.selection()
