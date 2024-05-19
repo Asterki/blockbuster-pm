@@ -32,7 +32,7 @@ class Main:
         return self.current_user
 
 
-if __name__ == '__main__':
+if __name__ == '__main__e':
     if input("Do you wish to preload movies? (y/n): ") == 'y':
         df = pd.read_csv('tmdb_5000_movies.csv')
         for index, row in df.iterrows():
@@ -42,6 +42,6 @@ if __name__ == '__main__':
 
     LoginPage().show_window()
 
-if __name__ == '__main__e':
-    from pages.admin.index import AdminMain
-    AdminMain().show_window()
+if __name__ == '__main__':
+    from pages.admin.movies import AdminMovies
+    AdminMovies().show_window()

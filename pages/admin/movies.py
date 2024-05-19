@@ -8,6 +8,86 @@ from services.logger import LoggerService
 from services.database import DatabaseService
 
 
+class UpdateMovieWindow:
+    def __init__(self, movie_id):
+        self.window = Tk()
+        self.window.title('Movie Rental')
+        self.window.geometry('500x500')
+        self.window.resizable(False, False)
+
+        self.label = Label(self.window, text='Update Movie', font=('Arial', 20))
+        self.label.pack()
+
+        self.label_title = Label(self.window, text='Title', font=('Arial', 15))
+        self.label_title.pack()
+
+        self.title = StringVar()
+        self.entry_title = Entry(self.window, font=('Arial', 15), textvariable=self.title)
+        self.entry_title.pack()
+
+        self.label_overview = Label(self.window, text='Overview', font=('Arial', 15))
+        self.label_overview.pack()
+
+        self.overview = StringVar()
+        self.entry_overview = Entry(self.window, font=('Arial', 15), textvariable=self.overview)
+        self.entry_overview.pack()
+
+        self.label_release_date = Label(self.window, text='Release Date', font=('Arial', 15))
+        self.label_release_date.pack()
+
+        self.release_date = StringVar()
+        self.entry_release_date = Entry(self.window, font=('Arial', 15), textvariable=self.release_date)
+        self.entry_release_date.pack()
+
+        self.label_genres = Label(self.window, text='Genres', font=('Arial', 15))
+        self.label_genres.pack()
+
+        self.genres = StringVar()
+        self.entry_genres = Entry(self.window, font=('Arial', 15), textvariable=self.genres)
+        self.entry_genres.pack()
+
+        self.label_director = Label(self.window, text='Director', font=('Arial', 15))
+        self.label_director.pack()
+
+        self.director = StringVar()
+        self.entry_director = Entry(self.window, font=('Arial', 15), textvariable=self.director)
+        self.entry_director.pack()
+
+        self.label_rating = Label(self.window, text='Rating', font=('Arial', 15))
+        self.label_rating.pack()
+
+        self.rating = StringVar()
+        self.entry_rating = Entry(self.window, font=('Arial', 15), textvariable=self.rating)
+        self.entry_rating.pack()
+
+        self.button_update = Button(self.window, text='Update', font=('Arial', 15), command=self.update)
+        self.button_update.pack()
+
+        self.movie_id = movie_id
+        self.get_movie_data()
+        self.window.mainloop()
+
+    def get_movie_data(self):
+        movie = MovieModel().get_instance().get_movie(self.movie_id)
+
+    def update(self):
+        title = self.title.get()
+        overview = self.overview.get()
+        release_date = self.release_date.get()
+        genres = self.genres.get()
+        director = self.director.get()
+        rating = self.rating.get()
+
+        print(title, overview, release_date, genres, director, rating)
+
+        if not title or not overview or not release_date or not genres or not director or not rating:
+            messagebox.showerror('Error', 'All fields are required')
+            return
+
+        MovieModel().get_instance().update_movie(self.movie_id, title, overview, release_date, genres, director, rating)
+        self.window.destroy()
+
+
 class AdminMovies:
     def __init__(self):
         self.window = Tk()
@@ -31,9 +111,10 @@ class AdminMovies:
         self.treeview = ttk.Treeview(self.window)
         self.treeview.grid(row=1, column=1, columnspan=7, rowspan=6, sticky=(W, E))
 
-        self.treeview['columns'] = ('Title', 'Overview', 'Release Date', 'Genres', 'Director', 'Rating', 'Votes',
+        self.treeview['columns'] = ('ID', 'Title', 'Overview', 'Release Date', 'Genres', 'Director', 'Rating', 'Votes',
                                     'Revenue')
         self.treeview.column('#0', width=0, stretch=NO)
+        self.treeview.column('ID', anchor=W, width=50)
         self.treeview.column('Title', anchor=W, width=200)
         self.treeview.column('Overview', anchor=W, width=300)
         self.treeview.column('Release Date', anchor=W, width=150)
@@ -44,6 +125,7 @@ class AdminMovies:
         self.treeview.column('Revenue', anchor=W, width=100)
 
         self.treeview.heading('#0', text='', anchor=W)
+        self.treeview.heading('ID', text='ID', anchor=W)
         self.treeview.heading('Title', text='Title', anchor=W)
         self.treeview.heading('Overview', text='Overview', anchor=W)
         self.treeview.heading('Release Date', text='Release Date', anchor=W)
@@ -61,9 +143,9 @@ class AdminMovies:
         Button(self.window, text='Previous', command=self.previous_page).grid(row=3, column=10, sticky=(W, E))
 
         # Movie actions
-        Button(self.window, text='Update').grid(row=7, column=10, sticky=(W, E))
-        Button(self.window, text='Create').grid(row=8, column=10, sticky=(W, E))
-        Button(self.window, text='Delete').grid(row=9, column=10, sticky=(W, E))
+        Button(self.window, text='Update', command=self.update_movie).grid(row=7, column=10, sticky=(W, E))
+        Button(self.window, text='Create', command=self.create_movie).grid(row=8, column=10, sticky=(W, E))
+        Button(self.window, text='Delete', command=self.delete_movie).grid(row=9, column=10, sticky=(W, E))
 
         self.lblPage = Label(self.window, text="Page: 1")
         self.lblPage.grid(row=4, column=10, sticky=(W, E))
@@ -84,11 +166,11 @@ class AdminMovies:
     def show_movie_info(self, event):
         selected_item = self.treeview.item(self.treeview.selection())["values"]
 
-        self.lblTitle.config(text="Title: " + selected_item[0])
-        self.lblOverview.config(text="Overview: " + selected_item[1])
-        self.lblOtherInfo.config(text="Release Date: " + str(selected_item[2]) + "\nGenres: " + selected_item[3] +
-                                    "\nDirector: " + selected_item[4] + "\nRating: " + str(selected_item[5]) +
-                                    "\nVotes: " + str(selected_item[6]) + "\nRevenue: " + str(selected_item[7]))
+        self.lblTitle.config(text="Title: " + selected_item[1])
+        self.lblOverview.config(text="Overview: " + selected_item[2])
+        self.lblOtherInfo.config(text="Release Date: " + str(selected_item[3]) + "\nGenres: " + selected_item[4] +
+                                    "\nDirector: " + selected_item[5] + "\nRating: " + str(selected_item[6]) +
+                                    "\nVotes: " + str(selected_item[7]) + "\nRevenue: " + str(selected_item[8]))
 
     def get_and_show_movies(self):
         # delete current movies
@@ -97,7 +179,7 @@ class AdminMovies:
 
         movies = MovieModel().get_instance().get_movie_count(25, self.page*25)
         for movie in list(movies):
-            self.treeview.insert('', 'end', text='', values=(movie[1], movie[2], movie[3], movie[4], movie[5], movie[6],
+            self.treeview.insert('', 'end', text='', values=(movie[0], movie[1], movie[2], movie[3], movie[4], movie[5], movie[6],
                                                              movie[7], movie[8]))
 
     def show_window(self):
@@ -131,3 +213,28 @@ class AdminMovies:
         self.page -= 1
         self.get_and_show_movies()
         self.lblPage.config(text="Page: " + str(self.page + 1))
+
+    def update_movie(self):
+        selected_item = self.treeview.selection()
+
+        if not all(selected_item):
+            messagebox.showerror('Error', 'Please select a movie')
+            return
+
+        movie_id = self.treeview.item(selected_item)['values'][0]
+        UpdateMovieWindow(movie_id)
+
+    def create_movie(self):
+        pass
+
+    def delete_movie(self):
+        selected_item = self.treeview.selection()
+
+        if not all(selected_item):
+            messagebox.showerror('Error', 'Please select a movie')
+            return
+
+        movie_id = self.treeview.item(selected_item)['values'][0]
+        MovieModel().get_instance().delete_movie(movie_id)
+        self.get_and_show_movies()
+        messagebox.showinfo('Success', 'Movie deleted successfully')
