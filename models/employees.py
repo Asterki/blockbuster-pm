@@ -40,15 +40,14 @@ class UserModel:
     def delete_user(self, _id):
         self.db.delete('employees', f'id = {_id}')
 
-    def update_user(self, _id, name, hired_since, admin, phone_number, movies_sold):
+    def update_user(self, _id, name, admin, phone_number, password):
         LoggerService().get_instance().log("admin", 'User updated')
 
         self.db.update('employees', {
             'name': name,
-            'hired_since': hired_since,
             'admin': admin,
             'phone_number': phone_number,
-            'movies_sold': movies_sold
+            'password': password
         }, f'id = {_id}')
 
     def login(self, name, password):

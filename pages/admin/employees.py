@@ -5,68 +5,6 @@ from datetime import datetime
 from models.employees import UserModel
 
 
-class UpdateUserWindow:
-    def __init__(self, user_id):
-        self.window = Tk()
-        self.window.title('Movie Rental')
-        self.window.geometry('500x500')
-        self.window.resizable(False, False)
-
-        self.label = Label(self.window, text='Update User', font=('Arial', 20))
-        self.label.pack()
-
-        self.label_username = Label(self.window, text='Username', font=('Arial', 15))
-        self.label_username.pack()
-
-        self.username = StringVar()
-        self.entry_username = Entry(self.window, font=('Arial', 15), textvariable=self.username)
-        self.entry_username.pack()
-
-        self.label_password = Label(self.window, text='Password', font=('Arial', 15))
-        self.label_password.pack()
-
-        self.password = StringVar()
-        self.entry_password = Entry(self.window, font=('Arial', 15), textvariable=self.password)
-        self.entry_password.pack()
-
-        self.label_phone_number = Label(self.window, text='Phone Number', font=('Arial', 15))
-        self.label_phone_number.pack()
-
-        self.phone_number = StringVar()
-        self.entry_phone_number = Entry(self.window, font=('Arial', 15), textvariable=self.phone_number)
-        self.entry_phone_number.pack()
-
-        self.button_update = Button(self.window, text='Update', font=('Arial', 15), command=self.update)
-        self.button_update.pack()
-
-        self.user_id = user_id
-        self.get_user_data()
-        self.window.mainloop()
-
-    def get_user_data(self):
-        user = UserModel().get_instance().get_user(self.user_id)
-        self.username.set(user[1])
-        self.phone_number.set(user[4])
-
-        self.username.set(user[1])
-        self.password.set(user[6])
-        self.phone_number.set(user[4])
-
-    def update(self):
-        username = self.username.get()
-        password = self.password.get()
-        phone_number = self.phone_number.get()
-
-        print(username, password, phone_number)
-
-        if not username or not password or not phone_number:
-            messagebox.showerror('Error', 'All fields are required')
-        else:
-            UserModel().get_instance().update_user(self.user_id, username, datetime.now().strftime('%Y-%m-%d'), True, phone_number, 0)
-            messagebox.showinfo('Success', 'User updated successfully')
-            self.window.destroy()
-
-
 class AdminEmployees:
     def __init__(self):
         self.window = Tk()
@@ -88,7 +26,8 @@ class AdminEmployees:
         self.title.grid(row=0, column=0, columnspan=12)
 
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.grid(row=1, column=1, columnspan=7, rowspan=6, sticky=(W, E))
+        self.treeview.grid(row=1, column=1, columnspan=7, rowspan=6, sticky="WE")
+        self.treeview.bind('<Double-1>', lambda e: self.update_user())
 
         self.treeview['columns'] = ('ID', 'Name', 'Hired Since', 'Is Admin', 'Phone Number', 'Movies Sold')
         self.treeview.column('#0', width=0, stretch=YES)
@@ -107,14 +46,14 @@ class AdminEmployees:
         self.treeview.heading('Phone Number', text='Phone Number', anchor=W)
         self.treeview.heading('Movies Sold', text='Movies Sold', anchor=W)
 
-        self.delete_button = Button(self.window, text='Delete', font=('Arial', 15), command=self.delete_user)
-        self.delete_button.grid(row=2, column=9, columnspan=2, sticky=(W, E))
+        self.delete_button = Button(self.window, text='Delete', command=self.delete_user)
+        self.delete_button.grid(row=1, column=9, columnspan=2, sticky="WE")
 
-        self.update_button = Button(self.window, text='Update', font=('Arial', 15), command=self.update_user)
-        self.update_button.grid(row=3, column=9, columnspan=2, sticky=(W, E))
+        self.update_button = Button(self.window, text='Update', command=self.update_user)
+        self.update_button.grid(row=2, column=9, columnspan=2, sticky="WE")
 
-        self.create_button = Button(self.window, text='Create', font=('Arial', 15), command=self.create_user)
-        self.create_button.grid(row=4, column=9, columnspan=2, sticky=(W, E))
+        self.create_button = Button(self.window, text='Create', command=self.create_user)
+        self.create_button.grid(row=3, column=9, columnspan=2, sticky="WE")
 
         self.get_and_show_users()
         self.window.mainloop()
@@ -131,9 +70,9 @@ class AdminEmployees:
     def delete_user(self):
         selected_item = self.treeview.selection()
 
-        if all(selected_item):
-            user_id = self.treeview.item(selected_item)['values'][0]
-            username = self.treeview.item(selected_item)['values'][1]
+        if len(selected_item) == 1 and all(selected_item):
+            user_id = self.treeview.item(selected_item[0])['values'][0]
+            username = self.treeview.item(selected_item[0])['values'][1]
 
             if username == 'admin':
                 messagebox.showerror('Error', 'Cannot delete admin user')
@@ -141,11 +80,11 @@ class AdminEmployees:
                 res = messagebox.askyesno('Delete user', f'Are you sure you want to delete {username}?')
                 if res:
                     UserModel().get_instance().delete_user(user_id)
-                    self.treeview.delete(selected_item)
+                    self.treeview.delete(selected_item[0])
 
                     messagebox.showinfo('Success', 'User deleted successfully')
 
-        else:
+        elif len(selected_item) > 1 or len(selected_item) == 0:
             messagebox.showerror('Error', 'Select a user to delete')
 
     def create_user(self):
@@ -169,12 +108,32 @@ class AdminEmployees:
     def update_user(self):
         selected_item = self.treeview.selection()
 
-        if all(selected_item):
-            user_id = self.treeview.item(selected_item)['values'][0]
-            UpdateUserWindow(user_id)
-        else:
+        if len(selected_item) == 1 and all(selected_item):
+            user_id = self.treeview.item(selected_item[0])['values'][0]
+            if self.treeview.item(selected_item[0])['values'][1] == 'admin':
+                messagebox.showerror('Error', 'Cannot update admin user')
+            else:
+                # Ask for new user data
+                new_username = simpledialog.askstring("Username", "Enter new username")
+                new_password = simpledialog.askstring("Password", "Enter new password")
+                new_phone_number = simpledialog.askstring("Phone Number", "Enter new phone number")
+                new_is_admin = messagebox.askyesno("Is Admin", "Is this user an admin?")
+
+                # Checks
+                if not new_username or not new_password or not new_phone_number:
+                    messagebox.showerror('Error', 'All fields are required')
+                else:
+                    # Update the user
+                    UserModel().get_instance().update_user(user_id, new_username, new_is_admin, new_phone_number,
+                                                           new_password)
+                    messagebox.showinfo('Success', 'User updated successfully')
+
+                    # Update the table
+                    self.get_and_show_users()
+        elif len(selected_item) > 1 or len(selected_item) == 0:
             messagebox.showerror('Error', 'Select a user to update')
 
+    # Navigation from here on
     def show_window(self):
         self.window.mainloop()
 
