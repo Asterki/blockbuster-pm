@@ -24,10 +24,10 @@ class AdminLogs:
         self.window.config(menu=self.menu)
 
         self.title = Label(self.window, text='Logs', font=('Arial', 20), pady=20)
-        self.title.grid(row=0, column=0, columnspan=12, sticky=(W, E))
+        self.title.grid(row=0, column=0, columnspan=12, sticky="WENS")
 
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.grid(row=1, column=1, columnspan=7, sticky=(W, E, N, S))
+        self.treeview.grid(row=1, column=1, columnspan=7, sticky="WENS")
 
         self.treeview['columns'] = ('Username', 'Action', 'Date')
         self.treeview.column('#0', width=0, stretch=NO)
@@ -40,8 +40,8 @@ class AdminLogs:
         self.treeview.heading('Action', text='Action', anchor=W)
         self.treeview.heading('Date', text='Date', anchor=W)
 
-        self.export_button = Button(self.window, text='Export Logs', font=('Arial', 15), command=self.export_logs)
-        self.export_button.grid(row=1, column=9, columnspan=2, sticky=(W, E, N))
+        self.export_button = Button(self.window, text='Export Logs', command=self.export_logs)
+        self.export_button.grid(row=1, column=9, columnspan=2, sticky="WEN")
 
         self.get_and_show_logs()
         self.window.mainloop()
