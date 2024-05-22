@@ -44,4 +44,4 @@ if __name__ == '__main__e':
 
 if __name__ == '__main__':
     from pages.admin.movies import AdminMovies
-    AdminMovies().show_window()
+    AdminMovies().show_window(user="admin")

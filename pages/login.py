@@ -51,7 +51,7 @@ class LoginPage:
 
             if result[3] == 'True':  # Check if the user is an admin
                 from pages.admin.index import AdminMain
-                AdminMain().show_window()
+                AdminMain().show_window(user=result[1])
             else:
                 from pages.main import Main as MainPage
-                MainPage().show_window()
+                MainPage().show_window(user=result[1])

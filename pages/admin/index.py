@@ -7,6 +7,7 @@ class AdminMain:
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
         self.window.attributes('-zoomed', True)
+        self.user = None
 
         # Grid configuration
         for i in range(12):
@@ -38,29 +39,30 @@ class AdminMain:
 
         self.window.mainloop()
 
-    def show_window(self):
+    def show_window(self, user):
+        self.user = user
         self.window.mainloop()
 
     def go_to_logs(self):
         from pages.admin.logs import AdminLogs
 
         self.window.destroy()
-        AdminLogs().show_window()
+        AdminLogs().show_window(user=self.user)
 
     def go_to_employees(self):
         from pages.admin.employees import AdminEmployees
 
         self.window.destroy()
-        AdminEmployees().show_window()
+        AdminEmployees().show_window(user=self.user)
 
     def go_to_rentals(self):
         from pages.admin.rentals import AdminRentals
 
         self.window.destroy()
-        AdminRentals().show_window()
+        AdminRentals().show_window(user=self.user)
 
     def go_to_movies(self):
         from pages.admin.movies import AdminMovies
 
         self.window.destroy()
-        AdminMovies().show_window()
+        AdminMovies().show_window(user=self.user)

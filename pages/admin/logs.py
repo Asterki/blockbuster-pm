@@ -12,6 +12,7 @@ class AdminLogs:
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
         self.window.attributes('-zoomed', True)
+        self.user = None
 
         # Grid configuration
         for i in range(12):
@@ -21,6 +22,7 @@ class AdminLogs:
         self.menu.add_command(label="Movies", command=self.go_to_movies)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
+        self.menu.add_command(label="Rentals", command=self.go_to_rentals)
         self.window.config(menu=self.menu)
 
         self.title = Label(self.window, text='Logs', font=('Arial', 20), pady=20)
@@ -51,11 +53,11 @@ class AdminLogs:
         for log in list(logs):
             self.treeview.insert('', 'end', text='', values=(log[1], log[2], log[3]))
 
-    def show_window(self):
+    def show_window(self, user):
+        self.user = user
         self.window.mainloop()
 
-    @staticmethod
-    def export_logs():
+    def export_logs(self):
         path = filedialog.askdirectory()  # Ask user to select a folder.
 
         if all(path):
@@ -64,22 +66,29 @@ class AdminLogs:
 
             if os.path.exists(file_path):
                 messagebox.showinfo('Success', 'Logs exported successfully')
+                LoggerService().get_instance().log(self.user, 'Logs exported')
             else:
                 messagebox.showerror('Error', 'Logs could not be exported')
 
     def go_to_admin(self):
         from pages.admin.index import AdminMain
         self.window.destroy()
-        AdminMain().show_window()
+        AdminMain().show_window(user=self.user)
 
     def go_to_movies(self):
         from pages.admin.movies import AdminMovies
 
         self.window.destroy()
-        AdminMovies().show_window()
+        AdminMovies().show_window(user=self.user)
 
     def go_to_employees(self):
         from pages.admin.employees import AdminEmployees
 
         self.window.destroy()
-        AdminEmployees().show_window()
+        AdminEmployees().show_window(user=self.user)
+
+    def go_to_rentals(self):
+        from pages.admin.rentals import AdminRentals
+
+        self.window.destroy()
+        AdminRentals().show_window(user=self.user)

@@ -3,6 +3,7 @@ from tkinter import messagebox, ttk, simpledialog
 from datetime import datetime
 
 from models.employees import UserModel
+from services.logger import LoggerService
 
 
 class AdminEmployees:
@@ -11,6 +12,7 @@ class AdminEmployees:
         self.window.title('Movie Rental')
         self.window.geometry('900x600')
         self.window.attributes('-zoomed', True)
+        self.user = None
 
         # Grid configuration
         for i in range(12):
@@ -19,6 +21,7 @@ class AdminEmployees:
         self.menu = Menu(self.window)
         self.menu.add_command(label='Logs', command=self.go_to_logs)
         self.menu.add_command(label='Movies', command=self.go_to_movies)
+        self.menu.add_command(label='Rentals', command=self.go_to_rentals)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
@@ -83,6 +86,7 @@ class AdminEmployees:
                     self.treeview.delete(selected_item[0])
 
                     messagebox.showinfo('Success', 'User deleted successfully')
+                    LoggerService().get_instance().log(self.user, f'Deleted user {username}')
 
         elif len(selected_item) > 1 or len(selected_item) == 0:
             messagebox.showerror('Error', 'Select a user to delete')
@@ -104,6 +108,8 @@ class AdminEmployees:
             UserModel().get_instance().create_user(username, user_created, is_admin, phone_number, password, 0)
             messagebox.showinfo('Success', 'User created successfully')
             self.get_and_show_users()
+
+            LoggerService().get_instance().log(self.user, f'Created user {username}')
 
     def update_user(self):
         selected_item = self.treeview.selection()
@@ -128,26 +134,34 @@ class AdminEmployees:
                                                            new_password)
                     messagebox.showinfo('Success', 'User updated successfully')
 
+                    LoggerService().get_instance().log(self.user, f'Updated user {new_username}')
+
                     # Update the table
                     self.get_and_show_users()
         elif len(selected_item) > 1 or len(selected_item) == 0:
             messagebox.showerror('Error', 'Select a user to update')
 
     # Navigation from here on
-    def show_window(self):
+    def show_window(self, user):
+        self.user = user
         self.window.mainloop()
 
     def go_to_admin(self):
         from pages.admin.index import AdminMain
         self.window.destroy()
-        AdminMain().show_window()
+        AdminMain().show_window(user=self.user)
 
     def go_to_logs(self):
         from pages.admin.logs import AdminLogs
         self.window.destroy()
-        AdminLogs().show_window()
+        AdminLogs().show_window(user=self.user)
 
     def go_to_movies(self):
         from pages.admin.movies import AdminMovies
         self.window.destroy()
-        AdminMovies().show_window()
+        AdminMovies().show_window(user=self.user)
+
+    def go_to_rentals(self):
+        from pages.admin.rentals import AdminRentals
+        self.window.destroy()
+        AdminRentals().show_window(user=self.user)

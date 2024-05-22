@@ -4,7 +4,6 @@ from tkinter import ttk, messagebox, simpledialog
 from models.movies import MovieModel
 
 from services.logger import LoggerService
-from services.database import DatabaseService
 
 
 class AdminMovies:
@@ -13,6 +12,7 @@ class AdminMovies:
         self.window.title('Movie Rental')
         self.window.geometry('800x500')
         self.window.attributes('-zoomed', True)
+        self.user = None
 
         # Grid configuration
         for i in range(12):
@@ -22,6 +22,7 @@ class AdminMovies:
         self.menu.add_command(label="Logs", command=self.go_to_logs)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
+        self.menu.add_command(label="Rentals", command=self.go_to_rentals)
         self.window.config(menu=self.menu)
 
         self.title = Label(self.window, text='Movies', font=('Arial', 20), pady=20)
@@ -150,6 +151,8 @@ class AdminMovies:
         self.get_and_show_movies()
         messagebox.showinfo('Success', 'Movie updated successfully')
 
+        LoggerService().get_instance().log_action(self.user, 'Updated movie', 'Movie ID: ' + str(movie_id))
+
     def create_movie(self):
         name = simpledialog.askstring('Create Movie', 'Enter movie name')
         overview = simpledialog.askstring('Create Movie', 'Enter movie overview')
@@ -167,6 +170,8 @@ class AdminMovies:
         self.get_and_show_movies()
         messagebox.showinfo('Success', 'Movie created successfully')
 
+        LoggerService().get_instance().log_action(self.user, 'Created movie', 'Movie name: ' + name)
+
     def delete_movie(self):
         selected_item = self.treeview.selection()
 
@@ -179,23 +184,32 @@ class AdminMovies:
         self.get_and_show_movies()
         messagebox.showinfo('Success', 'Movie deleted successfully')
 
+        LoggerService().get_instance().log_action(self.user, 'Deleted movie', 'Movie ID: ' + str(movie_id))
+
     # Navigation
-    def show_window(self):
+    def show_window(self, user):
+        self.user = user
         self.window.mainloop()
 
     def go_to_admin(self):
         from pages.admin.index import AdminMain
         self.window.destroy()
-        AdminMain().show_window()
+        AdminMain().show_window(user=self.user)
 
     def go_to_logs(self):
         from pages.admin.logs import AdminLogs
 
         self.window.destroy()
-        AdminLogs().show_window()
+        AdminLogs().show_window(user=self.user)
 
     def go_to_employees(self):
         from pages.admin.employees import AdminEmployees
 
         self.window.destroy()
-        AdminEmployees().show_window()
+        AdminEmployees().show_window(user=self.user)
+
+    def go_to_rentals(self):
+        from pages.admin.rentals import AdminRentals
+
+        self.window.destroy()
+        AdminRentals().show_window(user=self.user)

@@ -7,6 +7,7 @@ class Main:
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
         self.window.resizable(False, False)
+        self.user = None
 
         self.label = Label(self.window, text='Welcome to Movie Rental', font=('Arial', 20))
         self.label.pack()
@@ -16,5 +17,6 @@ class Main:
 
         self.window.mainloop()
 
-    def show_window(self):
+    def show_window(self, user):
+        self.user = user
         self.window.mainloop()
