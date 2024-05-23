@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
+from PIL import Image, ImageTk
+
+import os
 
 from models.employees import UserModel
 from services.logger import LoggerService
@@ -11,26 +14,41 @@ class LoginPage:
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
         self.window.resizable(False, False)
+        self.window.config(bg="#35374f")
 
-        self.label = Label(self.window, text='Login', font=('Arial', 20))
-        self.label.pack()
+        # Grid configuration
+        for i in range(12):
+            self.window.columnconfigure(i, weight=1)
 
-        self.label_username = Label(self.window, text='Username', font=('Arial', 15))
-        self.label_username.pack()
+        self.label = Label(self.window, text='Login', font=('Arial', 20), fg="white", bg="#35374f")
+        self.label.grid(row=0, column=0, columnspan=12, sticky="WENS")
+
+        self.image = Image.open(os.path.join(os.path.dirname(__file__), '../public/user.png'))
+        self.image = self.image.resize((100, 100), Image.ANTIALIAS)
+        self.image = ImageTk.PhotoImage(self.image)
+        Label(self.window, image=self.image, bg="#35374f").grid(row=1, column=5, columnspan=2, sticky="WENS")
+
+        self.label_username = Label(self.window, text='Username', font=('Arial', 15), fg="white", bg="#35374f")
+        self.label_username.grid(row=2, column=0, columnspan=12, sticky="WENS")
 
         self.username = StringVar()
-        self.entry_username = Entry(self.window, font=('Arial', 15), textvariable=self.username)
-        self.entry_username.pack()
+        self.entry_username = Entry(self.window, font=('Arial', 15), textvariable=self.username, fg="white",
+                                    bg="#35374f")
+        self.entry_username.grid(row=3, column=2, columnspan=8, sticky="WENS")
 
-        self.label_password = Label(self.window, text='Password', font=('Arial', 15))
-        self.label_password.pack()
+        self.label_password = Label(self.window, text='Password', font=('Arial', 15), fg="white", bg="#35374f")
+        self.label_password.grid(row=4, column=0, columnspan=12, sticky="WENS")
 
         self.password = StringVar()
-        self.entry_password = Entry(self.window, font=('Arial', 15), show='*', textvariable=self.password)
-        self.entry_password.pack()
+        self.entry_password = Entry(self.window, font=('Arial', 15), show='*', textvariable=self.password, fg="white",
+                                    bg="#35374f")
+        self.entry_password.grid(row=5, column=2, columnspan=8, sticky="WENS")
 
-        self.button_login = Button(self.window, text='Login', font=('Arial', 15), command=self.login)
-        self.button_login.pack()
+        Label(text="", bg="#35374f").grid(row=6, column=0, columnspan=12, sticky="WENS")
+
+        self.button_login = Button(self.window, text='Login', font=('Arial', 15), command=self.login, bg="#fac710",
+                                   fg="white")
+        self.button_login.grid(row=7, column=2, columnspan=8, sticky="WENS")
 
     def show_window(self):
         self.window.mainloop()

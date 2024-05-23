@@ -13,29 +13,30 @@ class AdminMain:
         for i in range(12):
             self.window.columnconfigure(i, weight=1)
 
-        Label(self.window, text='Welcome to Movie Rental Admin Centre', font=('Arial', 20)).grid(row=1, column=0,
-                                                                                                 columnspan=12, pady=20,
-                                                                                                 sticky=(W, E))
+        Label(self.window, text='Welcome to Movie Rental Admin Centre', font=('Arial', 20)).grid(row=1,
+                                                                                                 column=4,
+                                                                                                 columnspan=4, pady=20,
+                                                                                                 sticky="WE")
 
         Button(self.window, text='See Logs', font=('Arial', 15), command=self.go_to_logs).grid(row=2,
-                                                                                               column=0,
-                                                                                               columnspan=12,
-                                                                                               sticky=(W, E))
+                                                                                               column=4,
+                                                                                               columnspan=4,
+                                                                                               sticky="WE")
 
         Button(self.window, text='See Users', font=('Arial', 15), command=self.go_to_employees).grid(row=3,
-                                                                                                     column=0,
-                                                                                                     columnspan=12,
-                                                                                                     sticky=(W, E))
+                                                                                                     column=4,
+                                                                                                     columnspan=4,
+                                                                                                     sticky="WE")
 
         Button(self.window, text='See Movies', font=('Arial', 15), command=self.go_to_movies).grid(row=4,
-                                                                                                   column=0,
-                                                                                                   columnspan=12,
-                                                                                                   sticky=(W, E))
+                                                                                                   column=4,
+                                                                                                   columnspan=4,
+                                                                                                   sticky="WE")
 
         Button(self.window, text='See Rentals', font=('Arial', 15), command=self.go_to_rentals).grid(row=5,
-                                                                                                     column=0,
-                                                                                                     columnspan=12,
-                                                                                                     sticky=(W, E))
+                                                                                                     column=4,
+                                                                                                     columnspan=4,
+                                                                                                     sticky="WE")
 
         self.window.mainloop()
 

@@ -25,7 +25,8 @@ class AdminRentals:
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
-        Label(self.window, text='Current Rentals', font=('Arial', 15)).grid(row=0, column=0, columnspan=12, sticky="WENS")
+        Label(self.window, text='Current Rentals', font=('Arial', 15)).grid(row=0, column=0, columnspan=12,
+                                                                            sticky="WENS")
         self.current_rentals = ttk.Treeview(self.window)
         self.current_rentals.grid(row=1, column=1, columnspan=10, sticky="WENS")
 
@@ -42,7 +43,8 @@ class AdminRentals:
         self.current_rentals.heading('Rented By', text='Rented By', anchor=W)
         self.current_rentals.heading('Rented At', text='Rented At', anchor=W)
 
-        Label(self.window, text='Expired Rentals', font=('Arial', 15)).grid(row=2, column=0, columnspan=12, sticky="WENS")
+        Label(self.window, text='Expired Rentals', font=('Arial', 15)).grid(row=2, column=0, columnspan=12,
+                                                                            sticky="WENS")
         self.expired_rentals = ttk.Treeview(self.window)
         self.expired_rentals.grid(row=3, column=1, columnspan=10, sticky="WENS")
 

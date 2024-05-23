@@ -32,16 +32,16 @@ class Main:
         return self.current_user
 
 
-if __name__ == '__main__e':
-    if input("Do you wish to preload movies? (y/n): ") == 'y':
-        df = pd.read_csv('tmdb_5000_movies.csv')
-        for index, row in df.iterrows():
-            MovieModel().get_instance().create_movie(row['title'], row['overview'], row['release_date'], row['genres'],
-                                                     row['director'], random.randint(1, 10), random.randint(1, 10),
-                                                     random.randint(1, 10))
+if __name__ == '__main__':
+    #if input("Do you wish to preload movies? (y/n): ") == 'y':
+    #    df = pd.read_csv('tmdb_5000_movies.csv')
+    #    for index, row in df.iterrows():
+    #        MovieModel().get_instance().create_movie(row['title'], row['overview'], row['release_date'], row['genres'],
+    #                                                 row['director'], random.randint(1, 10), random.randint(1, 10),
+    #                                                 random.randint(1, 10))
 
     LoginPage().show_window()
 
-if __name__ == '__main__':
+if __name__ == '__main__e':
     from pages.admin.movies import AdminMovies
     AdminMovies().show_window(user="admin")
