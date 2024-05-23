@@ -12,24 +12,26 @@ class AdminLogs:
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
         self.window.attributes('-zoomed', True)
+        self.window.config(bg="#35374f")
         self.user = None
 
         # Grid configuration
         for i in range(12):
             self.window.columnconfigure(i, weight=1)
+            self.window.rowconfigure(i, weight=1)
 
-        self.menu = Menu(self.window)
+        self.menu = Menu(self.window, bg="#535462", fg="white")
         self.menu.add_command(label="Movies", command=self.go_to_movies)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.menu.add_command(label="Rentals", command=self.go_to_rentals)
         self.window.config(menu=self.menu)
 
-        self.title = Label(self.window, text='Logs', font=('Arial', 20), pady=20)
-        self.title.grid(row=0, column=0, columnspan=12, sticky="WENS")
+        self.title = Label(self.window, text='Logs', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f")
+        self.title.grid(row=0, column=1, sticky="W")
 
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.grid(row=1, column=1, columnspan=7, sticky="WENS")
+        self.treeview.grid(row=1, column=1, columnspan=10, sticky="WENS")
 
         self.treeview['columns'] = ('Username', 'Action', 'Date')
         self.treeview.column('#0', width=0, stretch=NO)
@@ -42,8 +44,8 @@ class AdminLogs:
         self.treeview.heading('Action', text='Action', anchor=W)
         self.treeview.heading('Date', text='Date', anchor=W)
 
-        self.export_button = Button(self.window, text='Export Logs', command=self.export_logs)
-        self.export_button.grid(row=1, column=9, columnspan=2, sticky="WEN")
+        self.export_button = Button(self.window, text='Export Logs', command=self.export_logs, font=("Fredoka", 20, "bold"), fg="black", bg="#d3aa1d")
+        self.export_button.grid(row=4, column=1, columnspan=2, sticky="WEN")
 
         self.get_and_show_logs()
         self.window.mainloop()

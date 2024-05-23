@@ -12,24 +12,26 @@ class AdminEmployees:
         self.window.title('Movie Rental')
         self.window.geometry('900x600')
         self.window.attributes('-zoomed', True)
+        self.window.config(bg="#35374f")
         self.user = None
 
         # Grid configuration
         for i in range(12):
             self.window.columnconfigure(i, weight=1)
+            self.window.rowconfigure(i, weight=1)
 
-        self.menu = Menu(self.window)
+        self.menu = Menu(self.window, bg="#535462", fg="white")
         self.menu.add_command(label='Logs', command=self.go_to_logs)
         self.menu.add_command(label='Movies', command=self.go_to_movies)
         self.menu.add_command(label='Rentals', command=self.go_to_rentals)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
-        self.title = Label(self.window, text='Employees', font=('Arial', 20), pady=20)
-        self.title.grid(row=0, column=0, columnspan=12)
+        self.title = Label(self.window, text='Employees', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f")
+        self.title.grid(row=0, column=1, sticky="W")
 
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.grid(row=1, column=1, columnspan=7, rowspan=6, sticky="WE")
+        self.treeview.grid(row=1, column=1, columnspan=10, sticky="WE")
         self.treeview.bind('<Double-1>', lambda e: self.update_user())
 
         self.treeview['columns'] = ('ID', 'Name', 'Hired Since', 'Is Admin', 'Phone Number', 'Movies Sold')
@@ -49,14 +51,14 @@ class AdminEmployees:
         self.treeview.heading('Phone Number', text='Phone Number', anchor=W)
         self.treeview.heading('Movies Sold', text='Movies Sold', anchor=W)
 
-        self.delete_button = Button(self.window, text='Delete', command=self.delete_user)
-        self.delete_button.grid(row=1, column=9, columnspan=2, sticky="WE")
+        self.delete_button = Button(self.window, text='Delete', command=self.delete_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"))
+        self.delete_button.grid(row=2, column=1, columnspan=2, sticky="WE")
 
-        self.update_button = Button(self.window, text='Update', command=self.update_user)
-        self.update_button.grid(row=2, column=9, columnspan=2, sticky="WE")
+        self.update_button = Button(self.window, text='Update', command=self.update_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"))
+        self.update_button.grid(row=2, column=4, columnspan=3, sticky="WE")
 
-        self.create_button = Button(self.window, text='Create', command=self.create_user)
-        self.create_button.grid(row=3, column=9, columnspan=2, sticky="WE")
+        self.create_button = Button(self.window, text='Create', command=self.create_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"))
+        self.create_button.grid(row=2, column=8, columnspan=3, sticky="WE")
 
         self.get_and_show_users()
         self.window.mainloop()
