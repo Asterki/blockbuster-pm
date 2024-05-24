@@ -71,5 +71,5 @@ class LoginPage:
                 from pages.admin.index import AdminMain
                 AdminMain().show_window(user=result[1])
             else:
-                from pages.main import Main as MainPage
+                from pages.employee.index import Main as MainPage
                 MainPage().show_window(user=result[1])

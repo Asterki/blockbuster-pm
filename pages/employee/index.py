@@ -6,10 +6,11 @@ class Main:
         self.window = Tk()
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
-        self.window.resizable(False, False)
+        self.window.attributes('-zoomed', True)
+        self.window.configure(bg="#35374f")
         self.user = None
 
-        self.label = Label(self.window, text='Welcome to Movie Rental', font=('Arial', 20))
+        self.label = Label(self.window, text='Welcome to Blockbuser PM', font=('Arial', 20))
         self.label.pack()
 
         self.button = Button(self.window, text='Login', font=('Arial', 15))

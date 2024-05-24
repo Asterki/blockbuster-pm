@@ -1,5 +1,5 @@
 from tkinter import *
-from PIL import Image, ImageTk, ImageOps
+from PIL import Image, ImageTk
 
 import os
 
@@ -66,23 +66,35 @@ class AdminMain:
         self.image5 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/users_button.png'))
         self.image5 = self.image5.resize((200, 200), Image.ANTIALIAS)
         self.image5 = ImageTk.PhotoImage(self.image5)
-        Label(self.window, image=self.image5, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=3,
+        Label(self.window, image=self.image5, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=0,
                                                                                                    columnspan=3,
                                                                                                    sticky="WE")
-        Button(self.window, text='See Clients', font=('Fredoka', 15), command=self.go_to_clients).grid(row=4, column=4,
+        Button(self.window, text='See Clients', font=('Fredoka', 15), command=self.go_to_clients).grid(row=4, column=1,
                                                                                                        columnspan=1,
                                                                                                        sticky="WE")
 
-        self.image6 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/users_button.png'))
+        self.image6 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/employee_panel_button.png'))
         self.image6 = self.image6.resize((200, 200), Image.ANTIALIAS)
         self.image6 = ImageTk.PhotoImage(self.image6)
-        Label(self.window, image=self.image6, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=6,
+        Label(self.window, image=self.image6, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=3,
                                                                                                    columnspan=3,
                                                                                                    sticky="WE")
         Button(self.window, text='See Employee Panel', font=('Fredoka', 15), command=self.go_to_employee_panel).grid(row=4,
-                                                                                                              column=7,
+                                                                                                              column=4,
                                                                                                               columnspan=1,
                                                                                                               sticky="WE")
+
+        self.image7 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/logout_button.jpg'))
+        self.image7 = self.image7.resize((200, 200), Image.ANTIALIAS)
+        self.image7 = ImageTk.PhotoImage(self.image7)
+        Label(self.window, image=self.image7, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=6,
+                                                                                                   columnspan=3,
+                                                                                                   sticky="WE")
+        Button(self.window, text='Logout', font=('Fredoka', 15), command=self.logout).grid(
+            row=4,
+            column=7,
+            columnspan=1,
+            sticky="WE")
 
     def show_window(self, user):
         self.user = user
@@ -119,7 +131,13 @@ class AdminMain:
         AdminClients().show_window(user=self.user)
 
     def go_to_employee_panel(self):
-        from pages.main import Main
+        from pages.employee.index import Main
 
         self.window.destroy()
         Main().show_window(user=self.user)
+
+    def logout(self):
+        from pages.login import LoginPage
+
+        self.window.destroy()
+        LoginPage().show_window()
