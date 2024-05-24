@@ -69,7 +69,7 @@ class AdminMain:
         Label(self.window, image=self.image5, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=3,
                                                                                                    columnspan=3,
                                                                                                    sticky="WE")
-        Button(self.window, text='See Clients', font=('Fredoka', 15), command=self.go_to_rentals).grid(row=4, column=4,
+        Button(self.window, text='See Clients', font=('Fredoka', 15), command=self.go_to_clients).grid(row=4, column=4,
                                                                                                        columnspan=1,
                                                                                                        sticky="WE")
 
@@ -79,7 +79,7 @@ class AdminMain:
         Label(self.window, image=self.image6, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=6,
                                                                                                    columnspan=3,
                                                                                                    sticky="WE")
-        Button(self.window, text='See Employee Panel', font=('Fredoka', 15), command=self.go_to_rentals).grid(row=4,
+        Button(self.window, text='See Employee Panel', font=('Fredoka', 15), command=self.go_to_employee_panel).grid(row=4,
                                                                                                               column=7,
                                                                                                               columnspan=1,
                                                                                                               sticky="WE")
@@ -117,3 +117,9 @@ class AdminMain:
 
         self.window.destroy()
         AdminClients().show_window(user=self.user)
+
+    def go_to_employee_panel(self):
+        from pages.main import Main
+
+        self.window.destroy()
+        Main().show_window(user=self.user)
