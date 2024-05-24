@@ -20,7 +20,7 @@ class AdminEmployees:
             self.window.columnconfigure(i, weight=1)
             self.window.rowconfigure(i, weight=1)
 
-        self.menu = Menu(self.window, bg="#535462", fg="white")
+        self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
         self.menu.add_command(label='Logs', command=self.go_to_logs)
         self.menu.add_command(label='Movies', command=self.go_to_movies)
         self.menu.add_command(label='Rentals', command=self.go_to_rentals)
@@ -51,13 +51,13 @@ class AdminEmployees:
         self.treeview.heading('Phone Number', text='Phone Number', anchor=W)
         self.treeview.heading('Movies Sold', text='Movies Sold', anchor=W)
 
-        self.delete_button = Button(self.window, text='Delete', command=self.delete_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"))
+        self.delete_button = Button(self.window, text='Delete', command=self.delete_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.delete_button.grid(row=2, column=1, columnspan=2, sticky="WE")
 
-        self.update_button = Button(self.window, text='Update', command=self.update_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"))
+        self.update_button = Button(self.window, text='Update', command=self.update_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.update_button.grid(row=2, column=4, columnspan=3, sticky="WE")
 
-        self.create_button = Button(self.window, text='Create', command=self.create_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"))
+        self.create_button = Button(self.window, text='Create', command=self.create_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.create_button.grid(row=2, column=8, columnspan=3, sticky="WE")
 
         self.get_and_show_users()

@@ -20,7 +20,7 @@ class AdminLogs:
             self.window.columnconfigure(i, weight=1)
             self.window.rowconfigure(i, weight=1)
 
-        self.menu = Menu(self.window, bg="#535462", fg="white")
+        self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
         self.menu.add_command(label="Movies", command=self.go_to_movies)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
@@ -44,7 +44,7 @@ class AdminLogs:
         self.treeview.heading('Action', text='Action', anchor=W)
         self.treeview.heading('Date', text='Date', anchor=W)
 
-        self.export_button = Button(self.window, text='Export Logs', command=self.export_logs, font=("Fredoka", 20, "bold"), fg="black", bg="#d3aa1d")
+        self.export_button = Button(self.window, text='Export Logs', command=self.export_logs, font=("Fredoka", 20, "bold"), fg="black", bg="#d3aa1d", activebackground="#dbb11e")
         self.export_button.grid(row=4, column=1, columnspan=2, sticky="WEN")
 
         self.get_and_show_logs()

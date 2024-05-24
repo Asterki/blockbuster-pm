@@ -12,24 +12,25 @@ class AdminMovies:
         self.window.title('Movie Rental')
         self.window.geometry('800x500')
         self.window.attributes('-zoomed', True)
+        self.window.config(bg="#35374f")
         self.user = None
 
         # Grid configuration
         for i in range(12):
             self.window.columnconfigure(i, weight=1)
 
-        self.menu = Menu(self.window)
+        self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
         self.menu.add_command(label="Logs", command=self.go_to_logs)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.menu.add_command(label="Rentals", command=self.go_to_rentals)
         self.window.config(menu=self.menu)
 
-        self.title = Label(self.window, text='Movies', font=('Arial', 20), pady=20)
-        self.title.grid(row=0, column=0, columnspan=12)
+        self.title = Label(self.window, text='Movies', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f")
+        self.title.grid(row=0, column=1, columnspan=10, sticky="W")
 
         self.treeview = ttk.Treeview(self.window)
-        self.treeview.grid(row=1, column=1, columnspan=7, rowspan=6, sticky="WE")
+        self.treeview.grid(row=1, column=1, columnspan=10, rowspan=6, sticky="WE")
 
         self.treeview['columns'] = ('ID', 'Title', 'Overview', 'Release Date', 'Genres', 'Director', 'Rating', 'Votes',
                                     'Revenue')
@@ -55,41 +56,27 @@ class AdminMovies:
         self.treeview.heading('Votes', text='Votes', anchor=W)
         self.treeview.heading('Revenue', text='Revenue', anchor=W)
 
-        self.treeview.bind("<Double-1>", self.show_movie_info)
-
         self.page = 0
 
-        Button(self.window, text='Next', command=self.next_page).grid(row=2, column=10, sticky="WE")
-        Button(self.window, text='Previous', command=self.previous_page).grid(row=3, column=10, sticky="WE")
-        Button(self.window, text="Find Movie", command=self.find_movie).grid(row=5, column=10, sticky="WE")
-        Button(self.window, text="Reset Filter", command=self.get_and_show_movies).grid(row=6, column=10, sticky="WE")
-        self.lblPage = Label(self.window, text="Page: 1" + " Showing 25 movies per page")
-        self.lblPage.grid(row=4, column=10, sticky="WE")
+        # Page navigation
+        self.pageNavigationFrame = Frame(self.window, pady=10, padx=10, bg="#7c7d8b")
+        self.pageNavigationFrame.grid(row=7, column=1, columnspan=4, sticky="WE")
+        Button(self.pageNavigationFrame, text='<', command=self.previous_page, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=1, sticky="WE")
+        Button(self.pageNavigationFrame, text='>', command=self.next_page, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=2, sticky="WE")
+        self.lblPage = Label(self.pageNavigationFrame, bg="#7c7d8b", fg="white", text="Page: 1" + " Showing 25 movies per page", padx=20)
+        self.lblPage.grid(row=7, column=4, sticky="WE")
 
-        # Movie actions
-        Button(self.window, text='Update', command=self.update_movie).grid(row=7, column=10, sticky="WE")
-        Button(self.window, text='Create', command=self.create_movie).grid(row=8, column=10, sticky="WE")
-        Button(self.window, text='Delete', command=self.delete_movie).grid(row=9, column=10, sticky="WE")
+        # Movie action frame
+        self.movieActionFrame = Frame(self.window, pady=10, padx=10, bg="#7c7d8b")
+        self.movieActionFrame.grid(row=7, column=8, columnspan=3, sticky="WE")
+        Button(self.movieActionFrame, text='Update', command=self.update_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=7, sticky="WE")
+        Button(self.movieActionFrame, text='Create', command=self.create_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=8, sticky="WE")
+        Button(self.movieActionFrame, text='Delete', command=self.delete_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=9, sticky="WE")
 
-        self.lblTitle = Label(self.window, text="", font=('Arial', 20), wraplength=500, justify=CENTER)
-        self.lblTitle.grid(row=10, column=1, sticky="WE", columnspan=12)
-
-        self.lblOverview = Label(self.window, text="", font=('Arial', 15), wraplength=500)
-        self.lblOverview.grid(row=12, column=1, sticky="WE", columnspan=12)
-
-        self.lblOtherInfo = Label(self.window, text="Other Info", font=('Arial', 13), wraplength=500, pady=10)
-        self.lblOtherInfo.grid(row=11, column=1, sticky="WE", columnspan=12)
-
+        # Other actions
+        Button(self.movieActionFrame, text="Find Movie", command=self.find_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=11, sticky="WE")
+        Button(self.movieActionFrame, text="Reset Filter", command=self.get_and_show_movies, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="WE")
         self.get_and_show_movies()
-
-    def show_movie_info(self, event):
-        selected_item = self.treeview.item(self.treeview.selection()[0])["values"]
-
-        self.lblTitle.config(text="Title: " + selected_item[1])
-        self.lblOverview.config(text="Overview: " + selected_item[2])
-        self.lblOtherInfo.config(text="Release Date: " + str(selected_item[3]) + "\nGenres: " + selected_item[4] +
-                                      "\nDirector: " + selected_item[5] + "\nRating: " + str(selected_item[6]) +
-                                      "\nVotes: " + str(selected_item[7]) + "\nRevenue: " + str(selected_item[8]))
 
     def get_and_show_movies(self):
         # delete current movies
