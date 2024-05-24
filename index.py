@@ -1,7 +1,6 @@
 from tkinter import *
 
 from pages.login import LoginPage
-from models.employees import UserModel
 
 import pandas as pd
 import random
@@ -9,7 +8,7 @@ import json
 import pyglet, os
 
 from models.movies import MovieModel
-from models.employees import UserModel
+from models.employees import EmployeeModel
 
 pyglet.font.add_file(os.path.join(os.path.dirname(__file__), 'public/fonts/fredoka.ttf'))
 
@@ -56,8 +55,7 @@ if __name__ == '__main__':
             except IndexError:
                 pass
 
-        UserModel().create_user('admin', 'admin', True, '321312', 'admin', 0)
-
+        EmployeeModel().create_employee('admin', 'admin', True, '321312', 'admin', 0)
 
     LoginPage().show_window()
 

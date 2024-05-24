@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 
 import os
 
-from models.employees import UserModel
+from models.employees import EmployeeModel
 from services.logger import LoggerService
 
 
@@ -57,7 +57,7 @@ class LoginPage:
         username = self.username.get()
         password = self.password.get()
 
-        result = UserModel().get_instance().login(f'{username}', f'{password}')
+        result = EmployeeModel().get_instance().login(f'{username}', f'{password}')
         if result is None:
             messagebox.showerror('Error', 'Invalid username or password')
             self.password.set("")

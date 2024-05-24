@@ -27,6 +27,7 @@ class AdminRentals:
         self.menu.add_command(label='Logs', command=self.go_to_logs)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Movies', command=self.go_to_employees)
+        self.menu.add_command(label='Clients', command=self.go_to_clients)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
@@ -78,7 +79,6 @@ class AdminRentals:
             try:
                 movie = MovieModel().get_movie(i[1])
                 rented_by = ClientsModel().get_client(i[2])
-                rented_at = datetime.fromtimestamp(i[3])
                 return_at = datetime.fromtimestamp(i[4])
 
                 if return_at < datetime.now():
@@ -116,3 +116,9 @@ class AdminRentals:
 
         self.window.destroy()
         AdminMovies().show_window(user=self.user)
+
+    def go_to_clients(self):
+        from pages.admin.clients import AdminClients
+
+        self.window.destroy()
+        AdminClients().show_window(user=self.user)

@@ -111,3 +111,9 @@ class AdminMain:
 
         self.window.destroy()
         AdminMovies().show_window(user=self.user)
+
+    def go_to_clients(self):
+        from pages.admin.clients import AdminClients
+
+        self.window.destroy()
+        AdminClients().show_window(user=self.user)

@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox, ttk, simpledialog
 from datetime import datetime
 
-from models.employees import UserModel
+from models.employees import EmployeeModel
 from services.logger import LoggerService
 
 
@@ -24,6 +24,7 @@ class AdminEmployees:
         self.menu.add_command(label='Logs', command=self.go_to_logs)
         self.menu.add_command(label='Movies', command=self.go_to_movies)
         self.menu.add_command(label='Rentals', command=self.go_to_rentals)
+        self.menu.add_command(label='Clients', command=self.go_to_clients)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
@@ -64,7 +65,7 @@ class AdminEmployees:
         self.window.mainloop()
 
     def get_and_show_users(self):
-        users = UserModel().get_instance().get_all_users()
+        users = EmployeeModel().get_instance().get_all_employees()
 
         for i in self.treeview.get_children():
             self.treeview.delete(i)
@@ -84,7 +85,7 @@ class AdminEmployees:
             else:
                 res = messagebox.askyesno('Delete user', f'Are you sure you want to delete {username}?')
                 if res:
-                    UserModel().get_instance().delete_user(user_id)
+                    EmployeeModel().get_instance().delete_employee(user_id)
                     self.treeview.delete(selected_item[0])
 
                     messagebox.showinfo('Success', 'User deleted successfully')
@@ -102,12 +103,12 @@ class AdminEmployees:
         user_created = datetime.now().strftime('%Y-%m-%d')
 
         # Verifications
-        if UserModel().get_instance().get_user_by_name(username):
+        if EmployeeModel().get_instance().get_employee_by_name(username):
             messagebox.showerror('Error', 'User already exists')
         elif not username or not password or not phone_number:
             messagebox.showerror('Error', 'All fields are required')
         else:
-            UserModel().get_instance().create_user(username, user_created, is_admin, phone_number, password, 0)
+            EmployeeModel().get_instance().create_employee(username, user_created, is_admin, phone_number, password, 0)
             messagebox.showinfo('Success', 'User created successfully')
             self.get_and_show_users()
 
@@ -132,8 +133,8 @@ class AdminEmployees:
                     messagebox.showerror('Error', 'All fields are required')
                 else:
                     # Update the user
-                    UserModel().get_instance().update_user(user_id, new_username, new_is_admin, new_phone_number,
-                                                           new_password)
+                    EmployeeModel().get_instance().update_employee(user_id, new_username, new_is_admin, new_phone_number,
+                                                                   new_password)
                     messagebox.showinfo('Success', 'User updated successfully')
 
                     LoggerService().get_instance().log(self.user, f'Updated user {new_username}')
@@ -167,3 +168,9 @@ class AdminEmployees:
         from pages.admin.rentals import AdminRentals
         self.window.destroy()
         AdminRentals().show_window(user=self.user)
+
+    def go_to_clients(self):
+        from pages.admin.clients import AdminClients
+
+        self.window.destroy()
+        AdminClients().show_window(user=self.user)

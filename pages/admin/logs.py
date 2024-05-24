@@ -24,6 +24,7 @@ class AdminLogs:
         self.menu.add_command(label="Movies", command=self.go_to_movies)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
+        self.menu.add_command(label='Clients', command=self.go_to_clients)
         self.menu.add_command(label="Rentals", command=self.go_to_rentals)
         self.window.config(menu=self.menu)
 
@@ -94,3 +95,9 @@ class AdminLogs:
 
         self.window.destroy()
         AdminRentals().show_window(user=self.user)
+
+    def go_to_clients(self):
+        from pages.admin.clients import AdminClients
+
+        self.window.destroy()
+        AdminClients().show_window(user=self.user)
