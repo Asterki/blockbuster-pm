@@ -32,31 +32,33 @@ class AdminMovies:
         self.treeview = ttk.Treeview(self.window)
         self.treeview.grid(row=1, column=1, columnspan=10, rowspan=6, sticky="WE")
 
-        self.treeview['columns'] = ('ID', 'Title', 'Overview', 'Release Date', 'Genres', 'Director', 'Rating', 'Votes',
-                                    'Revenue')
+        self.treeview['columns'] = ('ID', 'Title', 'Stock', 'Overview', 'Release Date', 'Genres', 'Director', 'Rating', 'Price Month',
+                                    'Price')
         self.treeview.column('#0', width=0, stretch=NO)
         self.treeview.column('ID', anchor=W, width=50)
         self.treeview.column('Title', anchor=W, width=200)
+        self.treeview.column('Stock', anchor=W, width=50)
         self.treeview.column('Overview', anchor=W, width=300)
         self.treeview.column('Release Date', anchor=W, width=150)
         self.treeview.column('Genres', anchor=W, width=150)
         self.treeview.column('Director', anchor=W, width=150)
         self.treeview.column('Rating', anchor=W, width=50)
-        self.treeview.column('Votes', anchor=W, width=50)
-        self.treeview.column('Revenue', anchor=W, width=100)
+        self.treeview.column('Price Month', anchor=W, width=50)
+        self.treeview.column('Price', anchor=W, width=100)
 
         self.treeview.heading('#0', text='', anchor=W)
         self.treeview.heading('ID', text='ID', anchor=W)
         self.treeview.heading('Title', text='Title', anchor=W)
+        self.treeview.heading('Stock', text='Stock', anchor=W)
         self.treeview.heading('Overview', text='Overview', anchor=W)
         self.treeview.heading('Release Date', text='Release Date', anchor=W)
         self.treeview.heading('Genres', text='Genres', anchor=W)
         self.treeview.heading('Director', text='Director', anchor=W)
         self.treeview.heading('Rating', text='Rating', anchor=W)
-        self.treeview.heading('Votes', text='Votes', anchor=W)
-        self.treeview.heading('Revenue', text='Revenue', anchor=W)
+        self.treeview.heading('Price Month', text='Price Month', anchor=W)
+        self.treeview.heading('Price', text='Price', anchor=W)
 
-        self.page = 0
+        self.page = 1
 
         # Page navigation
         self.pageNavigationFrame = Frame(self.window, pady=10, padx=10, bg="#7c7d8b")
@@ -74,8 +76,8 @@ class AdminMovies:
         Button(self.movieActionFrame, text='Delete', command=self.delete_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=9, sticky="WE")
 
         # Other actions
-        Button(self.movieActionFrame, text="Find Movie", command=self.find_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=11, sticky="WE")
-        Button(self.movieActionFrame, text="Reset Filter", command=self.get_and_show_movies, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="WE")
+        Button(self.movieActionFrame, text="Find Movie", command=self.find_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="E")
+        Button(self.movieActionFrame, text="Reset Filter", command=self.get_and_show_movies, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=13, sticky="E")
         self.get_and_show_movies()
 
     def get_and_show_movies(self):
@@ -84,21 +86,26 @@ class AdminMovies:
             self.treeview.delete(item)
 
         movies = MovieModel().get_instance().get_movie_count(25, self.page*25)
+        movie_count = MovieModel().get_instance().get_movie_count_number()
+
+        self.lblPage.config(text="Page: " + str(self.page) + " Showing 25 movies per page (" + str(movie_count) + " movies in total)")
         for movie in list(movies):
-            self.treeview.insert('', 'end', text='', values=(movie[0], movie[1], movie[2], movie[3], movie[4], movie[5], movie[6],
+            self.treeview.insert('', 'end', text='', values=(movie[0], movie[1], movie[9], movie[2], movie[3], movie[4], movie[5], movie[6],
                                                              movie[7], movie[8]))
 
     def next_page(self):
+        movie_count = MovieModel().get_instance().get_movie_count_number()
         self.page += 1
         self.get_and_show_movies()
-        self.lblPage.config(text="Page: " + str(self.page + 1) + " Showing 25 movies per page")
+        self.lblPage.config(text="Page: " + str(self.page + 1) + " Showing 25 movies per page (" + str(movie_count) + " movies in total)")
 
     def previous_page(self):
+        movie_count = MovieModel().get_instance().get_movie_count_number()
         if self.page == 0:
             return
         self.page -= 1
         self.get_and_show_movies()
-        self.lblPage.config(text="Page: " + str(self.page + 1) + " Showing 25 movies per page")
+        self.lblPage.config(text="Page: " + str(self.page + 1) + " Showing 25 movies per page (" + str(movie_count) + " movies in total)")
 
     def find_movie(self):
         name = simpledialog.askstring('Find Movie', 'Enter movie name')
@@ -111,7 +118,7 @@ class AdminMovies:
 
         movies = MovieModel().get_instance().find_movie(name)
         for movie in list(movies):
-            self.treeview.insert('', 'end', text='', values=(movie[0], movie[1], movie[2], movie[3], movie[4], movie[5], movie[6],
+            self.treeview.insert('', 'end', text='', values=(movie[0], movie[1], movie[9], movie[2], movie[3], movie[4], movie[5], movie[6],
                                                              movie[7], movie[8]))
 
     def update_movie(self):
@@ -129,16 +136,18 @@ class AdminMovies:
         director = simpledialog.askstring('Update Movie', 'Enter movie director')
         rating = simpledialog.askinteger('Update Movie', 'Enter movie rating')
         price = simpledialog.askinteger('Update Movie', 'Enter movie price')
+        price_month = simpledialog.askinteger('Update Movie', 'Enter movie price per month')
+        stock = simpledialog.askinteger('Update Movie', 'Enter movie stock')
 
-        if not name or not overview or not release_date or not genres or not director or not rating or not price:
+        if not name or not overview or not release_date or not genres or not director or not rating or not price or not stock:
             messagebox.showerror('Error', 'All fields are required')
             return
 
-        MovieModel().get_instance().update_movie(movie_id, name, overview, release_date, genres, director, rating, price)
+        MovieModel().get_instance().update_movie(movie_id, name, overview, release_date, genres, director, rating, price_month, price, stock)
         self.get_and_show_movies()
         messagebox.showinfo('Success', 'Movie updated successfully')
 
-        LoggerService().get_instance().log_action(self.user, 'Updated movie', 'Movie ID: ' + str(movie_id))
+        LoggerService().get_instance().log(self.user, 'Updated movie, Movie ID: ' + str(movie_id))
 
     def create_movie(self):
         name = simpledialog.askstring('Create Movie', 'Enter movie name')
@@ -148,16 +157,18 @@ class AdminMovies:
         director = simpledialog.askstring('Create Movie', 'Enter movie director')
         rating = simpledialog.askinteger('Create Movie', 'Enter movie rating')
         price = simpledialog.askinteger('Create Movie', 'Enter movie price')
+        price_month = simpledialog.askinteger('Create Movie', 'Enter movie price per month')
+        stock = simpledialog.askinteger('Create Movie', 'Enter movie stock')
 
-        if not name or not overview or not release_date or not genres or not director or not rating or not price:
+        if not name or not overview or not release_date or not genres or not director or not rating or not price or not stock:
             messagebox.showerror('Error', 'All fields are required')
             return
 
-        MovieModel().get_instance().create_movie(name, overview, release_date, genres, director, rating, price)
+        MovieModel().get_instance().create_movie(name, overview, release_date, genres, director, rating, price_month, price, stock)
         self.get_and_show_movies()
         messagebox.showinfo('Success', 'Movie created successfully')
 
-        LoggerService().get_instance().log_action(self.user, 'Created movie', 'Movie name: ' + name)
+        LoggerService().get_instance().log(self.user, 'Created movie, Movie name: ' + name)
 
     def delete_movie(self):
         selected_item = self.treeview.selection()
@@ -171,7 +182,7 @@ class AdminMovies:
         self.get_and_show_movies()
         messagebox.showinfo('Success', 'Movie deleted successfully')
 
-        LoggerService().get_instance().log_action(self.user, 'Deleted movie', 'Movie ID: ' + str(movie_id))
+        LoggerService().get_instance().log(self.user, 'Deleted movie, Movie ID: ' + str(movie_id))
 
     # Navigation
     def show_window(self, user):

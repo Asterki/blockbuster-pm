@@ -15,7 +15,7 @@ class MovieModel:
             self.instance = DatabaseService()
         return self.instance
 
-    def create_movie(self, title, summary, year, genre, director, rating, price_month, price):
+    def create_movie(self, title, summary, year, genre, director, rating, price_month, price, stock):
         return self.db.insert('movies', {
             'title': title,
             'summary': summary,
@@ -24,7 +24,8 @@ class MovieModel:
             'director': director,
             'rating': rating,
             'price_month': price_month,
-            'price': price
+            'price': price,
+            'stock': stock
         })
 
     def get_movie(self, _id):
@@ -36,7 +37,7 @@ class MovieModel:
     def delete_movie(self, _id):
         self.db.delete('movies', f'id = {_id}')
 
-    def update_movie(self, _id, title, summary, year, genre, director, rating, price_month, price):
+    def update_movie(self, _id, title, summary, year, genre, director, rating, price_month, price, stock):
         self.db.update('movies', {
             'title': title,
             'summary': summary,
@@ -45,7 +46,8 @@ class MovieModel:
             'director': director,
             'rating': rating,
             'price_month': price_month,
-            'price': price
+            'price': price,
+            'stock': stock
         }, f'id = {_id}')
 
     def find_movie(self, title):
@@ -71,3 +73,9 @@ class MovieModel:
 
     def get_movie_count(self, count, offset):
         return self.db.select_count('movies', count=count, offset=offset)
+
+    def get_movie_count_number(self):
+        return self.db.get_row_count('movies')
+
+    def get_movies_by_stock(self, stock):
+        return self.db.select_all('movies', '*', f'stock = {stock}')

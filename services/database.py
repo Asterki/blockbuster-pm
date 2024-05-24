@@ -42,7 +42,8 @@ class DatabaseService:
                             director TEXT NOT NULL,
                             rating INTEGER NOT NULL,
                             price_month REAL NOT NULL,
-                            price REAL NOT NULL
+                            price REAL NOT NULL,
+                            stock INTEGER NOT NULL
                         )
                     ''')
 
@@ -60,17 +61,10 @@ class DatabaseService:
                          CREATE TABLE IF NOT EXISTS rentals (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             movie_id INTEGER NOT NULL,
-                            user_id INTEGER NOT NULL,
+                            client_id INTEGER NOT NULL,
                             rented_at INTEGER NOT NULL,
                             returned_at INTEGER,
                             sold BOOLEAN NOT NULL
-                        )
-                    ''')
-
-            self.cursor.execute('''
-                        CREATE TABLE IF NOT EXISTS inventory (
-                            movie_id INTEGER NOT NULL,
-                            quantity INTEGER NOT NULL
                         )
                     ''')
 
@@ -203,6 +197,22 @@ class DatabaseService:
                 self.insert(table_name, dict(zip(headers, row)))
 
             return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def get_row_count(self, table):
+        try:
+            self.cursor.execute(f'SELECT COUNT(*) FROM {table}')
+            return self.cursor.fetchone()[0]
+        except Exception as e:
+            print(e)
+            return False
+
+    def eval(self, query):
+        try:
+            self.cursor.execute(query)
+            return self.cursor.fetchall()
         except Exception as e:
             print(e)
             return False

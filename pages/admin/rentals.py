@@ -1,9 +1,11 @@
 from tkinter import *
-from tkinter import ttk, filedialog, messagebox
-import os
+from tkinter import ttk
 
 from services.logger import LoggerService
 from services.database import DatabaseService
+from models.rentals import RentalsModel
+from models.clients import ClientsModel
+from models.movies import MovieModel
 
 
 class AdminRentals:
@@ -12,21 +14,22 @@ class AdminRentals:
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
         self.window.attributes('-zoomed', True)
+        self.window.config(bg="#35374f")
         self.user = None
 
         # Grid configuration
         for i in range(12):
             self.window.columnconfigure(i, weight=1)
 
-        self.menu = Menu(self.window)
+        self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
         self.menu.add_command(label='Logs', command=self.go_to_logs)
         self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Movies', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
-        Label(self.window, text='Current Rentals', font=('Arial', 15)).grid(row=0, column=0, columnspan=12,
-                                                                            sticky="WENS")
+        Label(self.window, text='Current Rentals', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f").grid(row=0, column=1, columnspan=10,
+                                                                            sticky="W")
         self.current_rentals = ttk.Treeview(self.window)
         self.current_rentals.grid(row=1, column=1, columnspan=10, sticky="WENS")
 
@@ -43,8 +46,8 @@ class AdminRentals:
         self.current_rentals.heading('Rented By', text='Rented By', anchor=W)
         self.current_rentals.heading('Rented At', text='Rented At', anchor=W)
 
-        Label(self.window, text='Expired Rentals', font=('Arial', 15)).grid(row=2, column=0, columnspan=12,
-                                                                            sticky="WENS")
+        Label(self.window, text='Expired Rentals', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f").grid(row=2, column=1, columnspan=10,
+                                                                            sticky="W")
         self.expired_rentals = ttk.Treeview(self.window)
         self.expired_rentals.grid(row=3, column=1, columnspan=10, sticky="WENS")
 
@@ -64,10 +67,11 @@ class AdminRentals:
         self.expired_rentals.heading('Returned At', text='Returned At', anchor=W)
 
         self.get_and_show_movies()
-        self.window.mainloop()
 
     def get_and_show_movies(self):
-        print("ejqwio")
+        rentals = RentalsModel().get_all_rentals()
+        for i in rentals:
+            print(i)
 
     def show_window(self, user):
         self.user = user
