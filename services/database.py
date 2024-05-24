@@ -52,8 +52,11 @@ class DatabaseService:
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             name TEXT NOT NULL,
                             phone_number TEXT NOT NULL,
-                            rentals INTEGER NOT NULL,
-                            banned BOOLEAN NOT NULL
+                            rental_count INTEGER NOT NULL,
+                            banned BOOLEAN NOT NULL,
+                            age INTEGER NOT NULL,
+                            address TEXT NOT NULL,
+                            email TEXT NOT NULL
                         )
                     ''')
 

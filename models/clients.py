@@ -15,11 +15,15 @@ class ClientsModel:
             self.instance = DatabaseService()
         return self.instance
 
-    def create_client(self, name, phone_number, rentals):
+    def create_client(self, _id, name, phone_number, age, address, email):
         return self.db.insert('clients', {
             'name': name,
             'phone_number': phone_number,
-            'rentals': rentals
+            'rentals_count': 0,
+            'banned': False,
+            'age': age,
+            'address': address,
+            'email': email
         })
 
     def get_client(self, _id):
@@ -31,9 +35,13 @@ class ClientsModel:
     def delete_client(self, _id):
         self.db.delete('clients', f'id = {_id}')
 
-    def update_client(self, _id, name, phone_number, rentals):
+    def update_client(self, _id, name, phone_number, rentals_count, banned, age, address, email):
         self.db.update('clients', {
             'name': name,
             'phone_number': phone_number,
-            'rentals': rentals
+            'rentals_count': rentals_count,
+            'banned': banned,
+            'age': age,
+            'address': address,
+            'email': email
         }, f'id = {_id}')

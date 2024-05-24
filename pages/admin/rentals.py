@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import ttk
+import time
+from datetime import datetime
 
 from services.logger import LoggerService
 from services.database import DatabaseService
@@ -33,45 +35,60 @@ class AdminRentals:
         self.current_rentals = ttk.Treeview(self.window)
         self.current_rentals.grid(row=1, column=1, columnspan=10, sticky="WENS")
 
-        self.current_rentals['columns'] = ('Movie ID', 'Movie Name', 'Rented By', 'Rented At')
+        self.current_rentals['columns'] = ('Rental ID', 'Movie Name', 'Rented By', 'Was sold?', 'Return time')
         self.current_rentals.column('#0', width=0, stretch=NO)
-        self.current_rentals.column('Movie ID', anchor=W, width=100)
+        self.current_rentals.column('Rental ID', anchor=W, width=100)
         self.current_rentals.column('Movie Name', anchor=W, width=100)
         self.current_rentals.column('Rented By', anchor=W, width=100)
-        self.current_rentals.column('Rented At', anchor=W, width=100)
+        self.current_rentals.column('Was sold?', anchor=W, width=100)
+        self.current_rentals.column('Return time', anchor=W, width=100)
 
         self.current_rentals.heading('#0', text='', anchor=W)
-        self.current_rentals.heading('Movie ID', text='Movie ID', anchor=W)
+        self.current_rentals.heading('Rental ID', text='Rental ID', anchor=W)
         self.current_rentals.heading('Movie Name', text='Movie Name', anchor=W)
         self.current_rentals.heading('Rented By', text='Rented By', anchor=W)
-        self.current_rentals.heading('Rented At', text='Rented At', anchor=W)
+        self.current_rentals.heading('Was sold?', text='Was sold?', anchor=W)
+        self.current_rentals.heading('Return time', text='Return time', anchor=W)
 
         Label(self.window, text='Expired Rentals', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f").grid(row=2, column=1, columnspan=10,
                                                                             sticky="W")
         self.expired_rentals = ttk.Treeview(self.window)
         self.expired_rentals.grid(row=3, column=1, columnspan=10, sticky="WENS")
 
-        self.expired_rentals['columns'] = ('Movie ID', 'Movie Name', 'Rented By', 'Rented At', 'Returned At')
+        self.expired_rentals['columns'] = ('Rental ID', 'Movie Name', 'Rented By', 'Was sold?', 'Return time')
         self.expired_rentals.column('#0', width=0, stretch=NO)
-        self.expired_rentals.column('Movie ID', anchor=W, width=100)
+        self.expired_rentals.column('Rental ID', anchor=W, width=100)
         self.expired_rentals.column('Movie Name', anchor=W, width=100)
         self.expired_rentals.column('Rented By', anchor=W, width=100)
-        self.expired_rentals.column('Rented At', anchor=W, width=100)
-        self.expired_rentals.column('Returned At', anchor=W, width=100)
+        self.expired_rentals.column('Was sold?', anchor=W, width=100)
+        self.expired_rentals.column('Return time', anchor=W, width=100)
 
         self.expired_rentals.heading('#0', text='', anchor=W)
-        self.expired_rentals.heading('Movie ID', text='Movie ID', anchor=W)
+        self.expired_rentals.heading('Rental ID', text='Rental ID', anchor=W)
         self.expired_rentals.heading('Movie Name', text='Movie Name', anchor=W)
         self.expired_rentals.heading('Rented By', text='Rented By', anchor=W)
-        self.expired_rentals.heading('Rented At', text='Rented At', anchor=W)
-        self.expired_rentals.heading('Returned At', text='Returned At', anchor=W)
+        self.expired_rentals.heading('Was sold?', text='Was sold?', anchor=W)
+        self.expired_rentals.heading('Return time', text='Return time', anchor=W)
 
-        self.get_and_show_movies()
+        self.get_and_show_rentals()
 
-    def get_and_show_movies(self):
+    def get_and_show_rentals(self):
         rentals = RentalsModel().get_all_rentals()
         for i in rentals:
-            print(i)
+            try:
+                movie = MovieModel().get_movie(i[1])
+                rented_by = ClientsModel().get_client(i[2])
+                rented_at = datetime.fromtimestamp(i[3])
+                return_at = datetime.fromtimestamp(i[4])
+
+                if return_at < datetime.now():
+                    self.expired_rentals.insert('', 'end', text='',
+                                                values=(i[0], movie[1], rented_by[1], i[5], return_at))
+                else:
+                    self.current_rentals.insert('', 'end', text='',
+                                                values=(i[0], movie[1], rented_by[1], i[5], return_at))
+            except TypeError as e:
+                pass
 
     def show_window(self, user):
         self.user = user
