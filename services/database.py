@@ -98,6 +98,17 @@ class DatabaseService:
                         )
                     ''')
 
+            self.cursor.execute('''
+                        CREATE TABLE IF NOT EXISTS sales (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            client_id INTEGER NOT NULL,
+                            movie_id INTEGER NOT NULL,
+                            employee_id INTEGER NOT NULL,
+                            sale_date TEXT NOT NULL,
+                            sale_price REAL NOT NULL
+                        )
+                    ''')
+
             self.conn.commit()
         except Exception as e:
             print(e)

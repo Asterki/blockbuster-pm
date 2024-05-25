@@ -12,7 +12,7 @@ class MovieModel:
 
     def get_instance(self):
         if self.instance is None:
-            self.instance = DatabaseService()
+            self.instance = MovieModel()
         return self.instance
 
     def create_movie(self, title, summary, year, genre, director, rating, price_month, price, stock):

@@ -7,6 +7,7 @@ import pyglet, os
 
 from models.movies import MovieModel
 from models.employees import EmployeeModel
+from models.sales import SalesModel
 
 pyglet.font.add_file(os.path.join(os.path.dirname(__file__), 'public/fonts/fredoka.ttf'))
 
@@ -58,5 +59,7 @@ if __name__ == '__main__e':
     LoginPage().show_window()
 
 if __name__ == '__main__':
-    from pages.admin.clients import AdminClients
-    AdminClients().show_window(user="admin")
+    #SalesModel().get_instance().create_sale(1, 1, 1)
+
+    from pages.admin.sale import AdminSales
+    AdminSales().show_window(user="admin")

@@ -10,6 +10,10 @@ class Main:
         self.window.configure(bg="#35374f")
         self.user = None
 
+        # Grid configuration
+        for i in range(12):
+            self.window.columnconfigure(i, weight=1)
+
         self.label = Label(self.window, text='Welcome to Blockbuser PM', font=('Arial', 20))
         self.label.pack()
 
