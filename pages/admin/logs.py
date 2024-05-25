@@ -21,11 +21,7 @@ class AdminLogs:
             self.window.rowconfigure(i, weight=1)
 
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
-        self.menu.add_command(label="Movies", command=self.go_to_movies)
-        self.menu.add_command(label='Employees', command=self.go_to_employees)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
-        self.menu.add_command(label='Clients', command=self.go_to_clients)
-        self.menu.add_command(label="Rentals", command=self.go_to_rentals)
         self.window.config(menu=self.menu)
 
         self.title = Label(self.window, text='Logs', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f")
@@ -77,27 +73,3 @@ class AdminLogs:
         from pages.admin.index import AdminMain
         self.window.destroy()
         AdminMain().show_window(user=self.user)
-
-    def go_to_movies(self):
-        from pages.admin.movies import AdminMovies
-
-        self.window.destroy()
-        AdminMovies().show_window(user=self.user)
-
-    def go_to_employees(self):
-        from pages.admin.employees import AdminEmployees
-
-        self.window.destroy()
-        AdminEmployees().show_window(user=self.user)
-
-    def go_to_rentals(self):
-        from pages.admin.rentals import AdminRentals
-
-        self.window.destroy()
-        AdminRentals().show_window(user=self.user)
-
-    def go_to_clients(self):
-        from pages.admin.clients import AdminClients
-
-        self.window.destroy()
-        AdminClients().show_window(user=self.user)

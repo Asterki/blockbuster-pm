@@ -24,10 +24,6 @@ class AdminRentals:
             self.window.columnconfigure(i, weight=1)
 
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
-        self.menu.add_command(label='Logs', command=self.go_to_logs)
-        self.menu.add_command(label='Employees', command=self.go_to_employees)
-        self.menu.add_command(label='Movies', command=self.go_to_employees)
-        self.menu.add_command(label='Clients', command=self.go_to_clients)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
@@ -98,27 +94,3 @@ class AdminRentals:
         from pages.admin.index import AdminMain
         self.window.destroy()
         AdminMain().show_window(user=self.user)
-
-    def go_to_logs(self):
-        from pages.admin.logs import AdminLogs
-
-        self.window.destroy()
-        AdminLogs().show_window(user=self.user)
-
-    def go_to_employees(self):
-        from pages.admin.employees import AdminEmployees
-
-        self.window.destroy()
-        AdminEmployees().show_window(user=self.user)
-
-    def go_to_movies(self):
-        from pages.admin.movies import AdminMovies
-
-        self.window.destroy()
-        AdminMovies().show_window(user=self.user)
-
-    def go_to_clients(self):
-        from pages.admin.clients import AdminClients
-
-        self.window.destroy()
-        AdminClients().show_window(user=self.user)

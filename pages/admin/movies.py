@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk, messagebox, simpledialog
+import matplotlib.pyplot as plt
 
 from models.movies import MovieModel
 
@@ -20,10 +21,6 @@ class AdminMovies:
             self.window.columnconfigure(i, weight=1)
 
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
-        self.menu.add_command(label="Logs", command=self.go_to_logs)
-        self.menu.add_command(label='Employees', command=self.go_to_employees)
-        self.menu.add_command(label="Rentals", command=self.go_to_rentals)
-        self.menu.add_command(label='Clients', command=self.go_to_clients)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
@@ -64,21 +61,31 @@ class AdminMovies:
         # Page navigation
         self.pageNavigationFrame = Frame(self.window, pady=10, padx=10, bg="#7c7d8b")
         self.pageNavigationFrame.grid(row=7, column=1, columnspan=4, sticky="WE")
-        Button(self.pageNavigationFrame, text='<', command=self.previous_page, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=1, sticky="WE")
-        Button(self.pageNavigationFrame, text='>', command=self.next_page, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=2, sticky="WE")
-        self.lblPage = Label(self.pageNavigationFrame, bg="#7c7d8b", fg="white", text="Page: 1" + " Showing 25 movies per page", padx=20)
+        Button(self.pageNavigationFrame, text='<', command=self.previous_page, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=1, sticky="WE")
+        Button(self.pageNavigationFrame, text='>', command=self.next_page, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=2, sticky="WE")
+        self.lblPage = Label(self.pageNavigationFrame, bg="#7c7d8b", fg="white",
+                             text="Page: 1" + " Showing 25 movies per page", padx=20)
         self.lblPage.grid(row=7, column=4, sticky="WE")
 
         # Movie action frame
         self.movieActionFrame = Frame(self.window, pady=10, padx=10, bg="#7c7d8b")
         self.movieActionFrame.grid(row=7, column=8, columnspan=3, sticky="WE")
-        Button(self.movieActionFrame, text='Update', command=self.update_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=7, sticky="WE")
-        Button(self.movieActionFrame, text='Create', command=self.create_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=8, sticky="WE")
-        Button(self.movieActionFrame, text='Delete', command=self.delete_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=9, sticky="WE")
+        Button(self.movieActionFrame, text='Update', command=self.update_movie, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=7, sticky="WE")
+        Button(self.movieActionFrame, text='Create', command=self.create_movie, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=8, sticky="WE")
+        Button(self.movieActionFrame, text='Delete', command=self.delete_movie, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=9, sticky="WE")
 
         # Other actions
-        Button(self.movieActionFrame, text="Find Movie", command=self.find_movie, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="E")
-        Button(self.movieActionFrame, text="Reset Filter", command=self.get_and_show_movies, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=13, sticky="E")
+        Button(self.movieActionFrame, text="Find Movie", command=self.find_movie, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="E")
+        Button(self.movieActionFrame, text="Reset Filter", command=self.get_and_show_movies, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=13, sticky="E")
+        Button(self.movieActionFrame, text="Show Genres Stats", command=self.show_genre_stats, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=14, sticky="E")
         self.get_and_show_movies()
 
     def get_and_show_movies(self):
@@ -89,10 +96,27 @@ class AdminMovies:
         movies = MovieModel().get_instance().get_movie_count(25, self.page*25)
         movie_count = MovieModel().get_instance().get_movie_count_number()
 
-        self.lblPage.config(text="Page: " + str(self.page) + " Showing 25 movies per page (" + str(movie_count) + " movies in total)")
+        self.lblPage.config(text="Page: " + str(self.page) + " Showing 25 movies per page (" + str(movie_count) + "movies in total)")
         for movie in list(movies):
             self.treeview.insert('', 'end', text='', values=(movie[0], movie[1], movie[9], movie[2], movie[3], movie[4], movie[5], movie[6],
                                                              movie[7], movie[8]))
+
+    @staticmethod
+    def show_genre_stats():
+        movies = MovieModel().get_instance().get_all_movies()
+        genres = {}
+        for movie in movies:
+            if movie[4] in genres:
+                genres[movie[4]] += 1
+            else:
+                genres[movie[4]] = 1
+
+        fig, ax = plt.subplots()
+        ax.pie(genres.values(), labels=genres.keys(), autopct='%1.1f%%')
+        ax.axis('equal')
+        ax.set_xlabel('Sales by Employee')
+
+        plt.show()
 
     def next_page(self):
         movie_count = MovieModel().get_instance().get_movie_count_number()
@@ -194,27 +218,3 @@ class AdminMovies:
         from pages.admin.index import AdminMain
         self.window.destroy()
         AdminMain().show_window(user=self.user)
-
-    def go_to_logs(self):
-        from pages.admin.logs import AdminLogs
-
-        self.window.destroy()
-        AdminLogs().show_window(user=self.user)
-
-    def go_to_employees(self):
-        from pages.admin.employees import AdminEmployees
-
-        self.window.destroy()
-        AdminEmployees().show_window(user=self.user)
-
-    def go_to_rentals(self):
-        from pages.admin.rentals import AdminRentals
-
-        self.window.destroy()
-        AdminRentals().show_window(user=self.user)
-
-    def go_to_clients(self):
-        from pages.admin.clients import AdminClients
-
-        self.window.destroy()
-        AdminClients().show_window(user=self.user)

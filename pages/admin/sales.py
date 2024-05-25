@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import ttk, messagebox, simpledialog
+import matplotlib.pyplot as plt
 
 from models.sales import SalesModel
 from models.employees import EmployeeModel
 from models.movies import MovieModel
 from models.clients import ClientsModel
-from services.logger import LoggerService
 
 
 class AdminSales:
@@ -22,11 +22,6 @@ class AdminSales:
             self.window.columnconfigure(i, weight=1)
 
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
-        self.menu.add_command(label="Logs", command=self.go_to_logs)
-        self.menu.add_command(label='Employees', command=self.go_to_employees)
-        self.menu.add_command(label="Rentals", command=self.go_to_rentals)
-        self.menu.add_command(label='Clients', command=self.go_to_clients)
-        self.menu.add_command(label='Movies', command=self.go_to_movies)
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
@@ -59,6 +54,7 @@ class AdminSales:
         # Other actions
         Button(self.saleActionFrame, text="Find Sales by ID", command=self.find_sale_by_id, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="E")
         Button(self.saleActionFrame, text="Reset Filter", command=self.get_sales, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=13, sticky="E")
+        Button(self.saleActionFrame, text="Stats", command=self.show_sales_by_employee, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=14, sticky="E")
         self.get_sales()
 
     def get_sales(self):
@@ -91,37 +87,28 @@ class AdminSales:
         self.user = user
         self.window.mainloop()
 
+    @staticmethod
+    def show_sales_by_employee():
+        sales = SalesModel().get_instance().get_all_sales()
+
+        sales_by_employee = {}
+        for sale in sales:
+            username = EmployeeModel().get_instance().get_employee(sale[3])[1]
+
+            if username in sales_by_employee:
+                sales_by_employee[username] += 1
+            else:
+                sales_by_employee[username] = 1
+
+        fig, ax = plt.subplots()
+        keys = map(lambda x : x + ' (' + str(sales_by_employee[x]) + ' Sales)', list(sales_by_employee.keys()))
+        ax.pie(sales_by_employee.values(), labels=list(keys), autopct='%1.1f%%')
+        ax.axis('equal')
+        ax.set_xlabel('Sales by Employee')
+
+        plt.show()
+
     def go_to_admin(self):
         from pages.admin.index import AdminMain
         self.window.destroy()
         AdminMain().show_window(user=self.user)
-
-    def go_to_logs(self):
-        from pages.admin.logs import AdminLogs
-
-        self.window.destroy()
-        AdminLogs().show_window(user=self.user)
-
-    def go_to_movies(self):
-        from pages.admin.movies import AdminMovies
-
-        self.window.destroy()
-        AdminMovies().show_window(user=self.user)
-
-    def go_to_employees(self):
-        from pages.admin.employees import AdminEmployees
-
-        self.window.destroy()
-        AdminEmployees().show_window(user=self.user)
-
-    def go_to_rentals(self):
-        from pages.admin.rentals import AdminRentals
-
-        self.window.destroy()
-        AdminRentals().show_window(user=self.user)
-
-    def go_to_clients(self):
-        from pages.admin.clients import AdminClients
-
-        self.window.destroy()
-        AdminClients().show_window(user=self.user)
