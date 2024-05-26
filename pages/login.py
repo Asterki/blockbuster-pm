@@ -1,8 +1,8 @@
+import os
 from tkinter import *
 from tkinter import messagebox
-from PIL import Image, ImageTk
 
-import os
+from PIL import Image, ImageTk
 
 from models.employees import EmployeeModel
 from services.logger import LoggerService

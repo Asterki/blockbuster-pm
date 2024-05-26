@@ -1,6 +1,6 @@
-from services.database import DatabaseService
-import uuid
 from datetime import datetime
+
+from services.database import DatabaseService
 
 
 class LoggerService:

@@ -1,9 +1,9 @@
 from tkinter import *
 from tkinter import ttk, messagebox, simpledialog
+
 import matplotlib.pyplot as plt
 
 from models.movies import MovieModel
-
 from services.logger import LoggerService
 
 

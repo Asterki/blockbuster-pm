@@ -1,9 +1,9 @@
+import os
 from tkinter import *
 from tkinter import ttk, filedialog, messagebox
-import os
 
-from services.logger import LoggerService
 from services.database import DatabaseService
+from services.logger import LoggerService
 
 
 class AdminLogs:

@@ -1,5 +1,6 @@
-from services.database import DatabaseService
 import time
+
+from services.database import DatabaseService
 
 
 class SalesModel:

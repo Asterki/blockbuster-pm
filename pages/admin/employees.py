@@ -1,6 +1,6 @@
+from datetime import datetime
 from tkinter import *
 from tkinter import messagebox, ttk, simpledialog
-from datetime import datetime
 
 from models.employees import EmployeeModel
 from services.logger import LoggerService
@@ -24,7 +24,8 @@ class AdminEmployees:
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
-        self.title = Label(self.window, text='Employees', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f")
+        self.title = Label(self.window, text='Employees', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d",
+                           bg="#35374f")
         self.title.grid(row=0, column=1, sticky="W")
 
         self.treeview = ttk.Treeview(self.window)
@@ -48,13 +49,16 @@ class AdminEmployees:
         self.treeview.heading('Phone Number', text='Phone Number', anchor=W)
         self.treeview.heading('Movies Sold', text='Movies Sold', anchor=W)
 
-        self.delete_button = Button(self.window, text='Delete', command=self.delete_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
+        self.delete_button = Button(self.window, text='Delete', command=self.delete_user, fg="white", bg="#1a1a2b",
+                                    font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.delete_button.grid(row=2, column=1, columnspan=2, sticky="WE")
 
-        self.update_button = Button(self.window, text='Update', command=self.update_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
+        self.update_button = Button(self.window, text='Update', command=self.update_user, fg="white", bg="#1a1a2b",
+                                    font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.update_button.grid(row=2, column=4, columnspan=3, sticky="WE")
 
-        self.create_button = Button(self.window, text='Create', command=self.create_user, fg="white", bg="#1a1a2b", font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
+        self.create_button = Button(self.window, text='Create', command=self.create_user, fg="white", bg="#1a1a2b",
+                                    font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.create_button.grid(row=2, column=8, columnspan=3, sticky="WE")
 
         self.get_and_show_users()
@@ -129,8 +133,8 @@ class AdminEmployees:
                     messagebox.showerror('Error', 'All fields are required')
                 else:
                     # Update the user
-                    EmployeeModel().get_instance().update_employee(user_id, new_username, new_is_admin, new_phone_number,
-                                                                   new_password)
+                    EmployeeModel().get_instance().update_employee(user_id, new_username, new_is_admin,
+                                                                   new_phone_number, new_password)
                     messagebox.showinfo('Success', 'User updated successfully')
 
                     LoggerService().get_instance().log(self.user, f'Updated user {new_username}')

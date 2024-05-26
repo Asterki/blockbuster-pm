@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter import ttk, messagebox, simpledialog
+
 import matplotlib.pyplot as plt
 
-from models.sales import SalesModel
+from models.clients import ClientsModel
 from models.employees import EmployeeModel
 from models.movies import MovieModel
-from models.clients import ClientsModel
+from models.sales import SalesModel
 
 
 class AdminSales:

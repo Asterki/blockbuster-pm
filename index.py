@@ -1,12 +1,13 @@
-from pages.login import LoginPage
+import json
+import os
+import random
 
 import pandas as pd
-import random
-import json
-import pyglet, os
+import pyglet
 
-from models.movies import MovieModel
 from models.employees import EmployeeModel
+from models.movies import MovieModel
+from pages.login import LoginPage
 
 pyglet.font.add_file(os.path.join(os.path.dirname(__file__), 'public/fonts/fredoka.ttf'))
 

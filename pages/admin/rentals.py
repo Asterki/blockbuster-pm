@@ -1,13 +1,10 @@
+from datetime import datetime
 from tkinter import *
 from tkinter import ttk
-import time
-from datetime import datetime
 
-from services.logger import LoggerService
-from services.database import DatabaseService
-from models.rentals import RentalsModel
 from models.clients import ClientsModel
 from models.movies import MovieModel
+from models.rentals import RentalsModel
 
 
 class AdminRentals:
