@@ -20,6 +20,7 @@ class AdminLogs:
             self.window.columnconfigure(i, weight=1)
             self.window.rowconfigure(i, weight=1)
 
+        # Menu
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
@@ -27,6 +28,7 @@ class AdminLogs:
         self.title = Label(self.window, text='Logs', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f")
         self.title.grid(row=0, column=1, sticky="W")
 
+        # Treeview
         self.treeview = ttk.Treeview(self.window)
         self.treeview.grid(row=1, column=1, columnspan=10, sticky="WENS")
 
@@ -41,29 +43,31 @@ class AdminLogs:
         self.treeview.heading('Action', text='Action', anchor=W)
         self.treeview.heading('Date', text='Date', anchor=W)
 
-        self.export_button = Button(self.window, text='Export Logs', command=self.export_logs, font=("Fredoka", 20, "bold"), fg="black", bg="#d3aa1d", activebackground="#dbb11e")
+        self.export_button = Button(self.window, text='Export Logs', command=self.export_logs,
+                                    font=("Fredoka", 20, "bold"), fg="black", bg="#d3aa1d", activebackground="#dbb11e")
         self.export_button.grid(row=4, column=1, columnspan=2, sticky="WEN")
 
         self.get_and_show_logs()
-        self.window.mainloop()
-
-    def get_and_show_logs(self):
-        logs = LoggerService().get_instance().get_logs()
-        for log in list(logs):
-            self.treeview.insert('', 'end', text='', values=(log[1], log[2], log[3]))
 
     def show_window(self, user):
         self.user = user
         self.window.mainloop()
 
-    def export_logs(self):
-        path = filedialog.askdirectory()  # Ask user to select a folder.
+    def get_and_show_logs(self):
+        # Get logs from database
+        logs = LoggerService().get_instance().get_logs()
+        for log in list(logs):  # Insert logs into treeview
+            self.treeview.insert('', 'end', text='', values=(log[1], log[2], log[3]))
 
-        if all(path):
-            file_path = os.path.join(path, 'logs.xlsx')
-            DatabaseService().get_instance().export_to_excel('logs', file_path)
+    def export_logs(self):
+        path = filedialog.askdirectory()  # Ask user to select a folder
+
+        if all(path):  # If user selected a folder
+            file_path = os.path.join(path, 'logs.xlsx')  # Create file path
+            DatabaseService().get_instance().export_to_excel('logs', file_path)  # Export logs to excel
 
             if os.path.exists(file_path):
+                # Log the action
                 messagebox.showinfo('Success', 'Logs exported successfully')
                 LoggerService().get_instance().log(self.user, 'Logs exported')
             else:

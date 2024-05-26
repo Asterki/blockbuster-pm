@@ -1,5 +1,6 @@
 from services.database import DatabaseService
 
+from models.transactions import TransactionsModel
 
 class RentalsModel:
     instance = None
@@ -15,12 +16,12 @@ class RentalsModel:
             self.instance = DatabaseService()
         return self.instance
 
-    def create_rental(self, user_id, movie_id, rental_date, return_date):
+    def create_rental(self, client_id, movie_id, rental_date, return_date):
         return self.db.insert('rentals', {
-            'user_id': user_id,
+            'client_id': client_id,
             'movie_id': movie_id,
-            'rental_date': rental_date,
-            'return_date': return_date
+            'rented_at': rental_date,
+            'returned_at': return_date
         })
 
     def get_rental(self, _id):

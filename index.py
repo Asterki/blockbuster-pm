@@ -61,5 +61,5 @@ if __name__ == '__main__e':
 if __name__ == '__main__':
     #SalesModel().get_instance().create_sale(1, 1, 1)
 
-    from pages.admin.sales import AdminSales
-    AdminSales().show_window(user="admin")
+    from pages.employee.rentals import RentalsPage
+    RentalsPage().show_page(user="asterki")

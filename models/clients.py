@@ -45,3 +45,6 @@ class ClientsModel:
             'address': address,
             'email': email
         }, f'id = {_id}')
+
+    def find_client(self, name):
+        return self.db.select_all('clients', '*', f"LOWER(name) LIKE LOWER('%{name}%');")

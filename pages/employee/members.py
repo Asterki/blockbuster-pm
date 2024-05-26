@@ -52,10 +52,6 @@ class MembersPage:
         self.treeview.heading('Address', text='Address', anchor=W)
         self.treeview.heading('Email', text='Email', anchor=W)
 
-        self.delete_button = Button(self.window, text='Delete', command=self.delete_client, fg="white", bg="#1a1a2b",
-                                    font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
-        self.delete_button.grid(row=2, column=1, columnspan=2, sticky="WE")
-
         self.update_button = Button(self.window, text='Update', command=self.update_client, fg="white", bg="#1a1a2b",
                                     font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.update_button.grid(row=2, column=4, columnspan=3, sticky="WE")
@@ -66,24 +62,6 @@ class MembersPage:
 
         self.get_and_show_clients()
         self.window.mainloop()
-
-    def delete_client(self):
-        selected_item = self.treeview.selection()
-
-        if len(selected_item) == 1 and all(selected_item):
-            user_id = self.treeview.item(selected_item[0])['values'][0]
-            name = self.treeview.item(selected_item[0])['values'][1]
-
-            res = messagebox.askyesno('Delete user', f'Are you sure you want to delete {name}?')
-            if res:
-                ClientsModel().get_instance().delete_client(user_id)
-                self.treeview.delete(selected_item[0])
-
-                messagebox.showinfo('Success', 'Client deleted successfully')
-                LoggerService().get_instance().log(self.user, f'Deleted client {name}')
-
-        elif len(selected_item) > 1 or len(selected_item) == 0:
-            messagebox.showerror('Error', 'Select a user to delete')
 
     def get_and_show_clients(self):
         clients = ClientsModel().get_all_clients()

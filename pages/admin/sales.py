@@ -22,10 +22,12 @@ class AdminSales:
         for i in range(12):
             self.window.columnconfigure(i, weight=1)
 
+        # Menu
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
 
+        # Treeview configuration
         self.title = Label(self.window, text='Sales', font=('Fredoka', 25, "bold"), pady=20, fg="#d3aa1d", bg="#35374f")
         self.title.grid(row=0, column=1, columnspan=10, sticky="W")
 
@@ -52,32 +54,40 @@ class AdminSales:
         # Movie action frame
         self.saleActionFrame = Frame(self.window, pady=10, padx=10, bg="#7c7d8b")
         self.saleActionFrame.grid(row=7, column=8, columnspan=3, sticky="WE")
+
         # Other actions
-        Button(self.saleActionFrame, text="Find Sales by ID", command=self.find_sale_by_id, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="E")
-        Button(self.saleActionFrame, text="Reset Filter", command=self.get_sales, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=13, sticky="E")
-        Button(self.saleActionFrame, text="Stats", command=self.show_sales_by_employee, bg="#35374f", fg="white", activebackground="#3f425e", activeforeground="white").grid(row=7, column=14, sticky="E")
+        Button(self.saleActionFrame, text="Find Sales by ID", command=self.find_sale_by_id, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=12, sticky="E")
+        Button(self.saleActionFrame, text="Reset Filter", command=self.get_sales, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=13, sticky="E")
+        Button(self.saleActionFrame, text="Stats", command=self.show_sales_by_employee, bg="#35374f", fg="white",
+               activebackground="#3f425e", activeforeground="white").grid(row=7, column=14, sticky="E")
+
         self.get_sales()
 
     def get_sales(self):
-        sales = SalesModel().get_instance().get_all_sales()
-        for sale in sales:
+        sales = SalesModel().get_instance().get_all_sales()  # Get all the sales
+        for sale in sales:  # Insert each sale into the treeview
             client = ClientsModel().get_instance().get_client(sale[1])
             movie = MovieModel().get_instance().get_movie(sale[2])
             employee = EmployeeModel().get_instance().get_employee(sale[3])
 
-            self.treeview.insert('', 'end', text='', values=(sale[0], client[1], movie[1], employee[1], sale[4], sale[5]))
+            self.treeview.insert('', 'end', text='',
+                                 values=(sale[0], client[1], movie[1], employee[1], sale[4], sale[5]))
 
     def find_sale_by_id(self):
         try:
             sale_id = simpledialog.askinteger("Sale ID", "Enter the sale ID")
-            sale = SalesModel().get_instance().get_sale(sale_id)
+            sale = SalesModel().get_instance().get_sale(sale_id)  # Get the sale by ID
             if sale:
                 client = ClientsModel().get_instance().get_client(sale[1])
                 movie = MovieModel().get_instance().get_movie(sale[2])
                 employee = EmployeeModel().get_instance().get_employee(sale[3])
 
+                # Update the treeview
                 self.treeview.delete(*self.treeview.get_children())
-                self.treeview.insert('', 'end', text='', values=(sale[0], client[1], movie[1], employee[1], sale[4], sale[5]))
+                self.treeview.insert('', 'end', text='',
+                                     values=(sale[0], client[1], movie[1], employee[1], sale[4], sale[5]))
             else:
                 messagebox.showerror("Error", "Sale not found")
         except:
@@ -90,8 +100,9 @@ class AdminSales:
 
     @staticmethod
     def show_sales_by_employee():
-        sales = SalesModel().get_instance().get_all_sales()
+        sales = SalesModel().get_instance().get_all_sales()  # Get all the sales
 
+        # Sort them out by the employee id
         sales_by_employee = {}
         for sale in sales:
             username = EmployeeModel().get_instance().get_employee(sale[3])[1]
@@ -101,12 +112,14 @@ class AdminSales:
             else:
                 sales_by_employee[username] = 1
 
+        # Generate the graph
         fig, ax = plt.subplots()
-        keys = map(lambda x : x + ' (' + str(sales_by_employee[x]) + ' Sales)', list(sales_by_employee.keys()))
+        keys = map(lambda x: x + ' (' + str(sales_by_employee[x]) + ' Sales)', list(sales_by_employee.keys()))
         ax.pie(sales_by_employee.values(), labels=list(keys), autopct='%1.1f%%')
         ax.axis('equal')
         ax.set_xlabel('Sales by Employee')
 
+        # Show the graph
         plt.show()
 
     def go_to_admin(self):

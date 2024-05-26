@@ -67,17 +67,7 @@ class DatabaseService:
                             movie_id INTEGER NOT NULL,
                             client_id INTEGER NOT NULL,
                             rented_at INTEGER NOT NULL,
-                            returned_at INTEGER,
-                            sold BOOLEAN NOT NULL
-                        )
-                    ''')
-
-            self.cursor.execute('''
-                        CREATE TABLE IF NOT EXISTS pro_members (
-                            userid INTEGER NOT NULL,
-                            since TEXT NOT NULL,
-                            expires TEXT NOT NULL,
-                            rentals_count INTEGER NOT NULL
+                            returned_at INTEGER
                         )
                     ''')
 
@@ -86,6 +76,7 @@ class DatabaseService:
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             user_id INTEGER NOT NULL,
                             amount REAL NOT NULL,
+                            description TEXT NOT NULL,
                             date TEXT NOT NULL
                         )
                     ''')
@@ -105,8 +96,7 @@ class DatabaseService:
                             client_id INTEGER NOT NULL,
                             movie_id INTEGER NOT NULL,
                             employee_id INTEGER NOT NULL,
-                            sale_date TEXT NOT NULL,
-                            sale_price REAL NOT NULL
+                            sale_date TEXT NOT NULL
                         )
                     ''')
 

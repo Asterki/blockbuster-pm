@@ -20,6 +20,7 @@ class AdminEmployees:
             self.window.columnconfigure(i, weight=1)
             self.window.rowconfigure(i, weight=1)
 
+        # Meny
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
         self.menu.add_command(label='Admin Panel', command=self.go_to_admin)
         self.window.config(menu=self.menu)
@@ -28,6 +29,7 @@ class AdminEmployees:
                            bg="#35374f")
         self.title.grid(row=0, column=1, sticky="W")
 
+        # Treeview that will show each employee
         self.treeview = ttk.Treeview(self.window)
         self.treeview.grid(row=1, column=1, columnspan=10, sticky="WE")
         self.treeview.bind('<Double-1>', lambda e: self.update_user())
@@ -49,6 +51,7 @@ class AdminEmployees:
         self.treeview.heading('Phone Number', text='Phone Number', anchor=W)
         self.treeview.heading('Movies Sold', text='Movies Sold', anchor=W)
 
+        # Button Actions
         self.delete_button = Button(self.window, text='Delete', command=self.delete_user, fg="white", bg="#1a1a2b",
                                     font=("Fredoka", 20, "bold"), activebackground="#23233b", activeforeground="white")
         self.delete_button.grid(row=2, column=1, columnspan=2, sticky="WE")
@@ -62,32 +65,38 @@ class AdminEmployees:
         self.create_button.grid(row=2, column=8, columnspan=3, sticky="WE")
 
         self.get_and_show_users()
-        self.window.mainloop()
 
     def get_and_show_users(self):
+        # Get all users
         users = EmployeeModel().get_instance().get_all_employees()
 
+        # Clear current treeview
         for i in self.treeview.get_children():
             self.treeview.delete(i)
 
+        # Put the values in the treeview
         for user in list(users):
             self.treeview.insert('', 'end', text='', values=(user[0], user[1], user[2], user[3], user[4], user[5]))
 
     def delete_user(self):
+        # Get the current selected employee
         selected_item = self.treeview.selection()
 
+        # If there is only one item selected
         if len(selected_item) == 1 and all(selected_item):
-            user_id = self.treeview.item(selected_item[0])['values'][0]
-            username = self.treeview.item(selected_item[0])['values'][1]
+            user_id = self.treeview.item(selected_item[0])['values'][0]  # Get the id
+            username = self.treeview.item(selected_item[0])['values'][1]  # Get the username
 
-            if username == 'admin':
+            if username == 'admin':  # Deleting the admin user is forbidden
                 messagebox.showerror('Error', 'Cannot delete admin user')
             else:
                 res = messagebox.askyesno('Delete user', f'Are you sure you want to delete {username}?')
                 if res:
+                    # Delete the user from the database and the treeview
                     EmployeeModel().get_instance().delete_employee(user_id)
                     self.treeview.delete(selected_item[0])
 
+                    # Log the action
                     messagebox.showinfo('Success', 'User deleted successfully')
                     LoggerService().get_instance().log(self.user, f'Deleted user {username}')
 
@@ -108,18 +117,21 @@ class AdminEmployees:
         elif not username or not password or not phone_number:
             messagebox.showerror('Error', 'All fields are required')
         else:
+            # Create the user
             EmployeeModel().get_instance().create_employee(username, user_created, is_admin, phone_number, password, 0)
-            messagebox.showinfo('Success', 'User created successfully')
             self.get_and_show_users()
 
+            # Log the action
+            messagebox.showinfo('Success', 'User created successfully')
             LoggerService().get_instance().log(self.user, f'Created user {username}')
 
     def update_user(self):
+        # Get the selected item from the treeview
         selected_item = self.treeview.selection()
 
-        if len(selected_item) == 1 and all(selected_item):
+        if len(selected_item) == 1 and all(selected_item):  # If there is only one item selected
             user_id = self.treeview.item(selected_item[0])['values'][0]
-            if self.treeview.item(selected_item[0])['values'][1] == 'admin':
+            if self.treeview.item(selected_item[0])['values'][1] == 'admin':  # Updating the admin user is forbidden
                 messagebox.showerror('Error', 'Cannot update admin user')
             else:
                 # Ask for new user data
@@ -135,12 +147,12 @@ class AdminEmployees:
                     # Update the user
                     EmployeeModel().get_instance().update_employee(user_id, new_username, new_is_admin,
                                                                    new_phone_number, new_password)
-                    messagebox.showinfo('Success', 'User updated successfully')
+                    self.get_and_show_users()
 
+                    # Log the action
+                    messagebox.showinfo('Success', 'User updated successfully')
                     LoggerService().get_instance().log(self.user, f'Updated user {new_username}')
 
-                    # Update the table
-                    self.get_and_show_users()
         elif len(selected_item) > 1 or len(selected_item) == 0:
             messagebox.showerror('Error', 'Select a user to update')
 
