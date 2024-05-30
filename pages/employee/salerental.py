@@ -118,7 +118,7 @@ class NewRentalPage:
         self.user = None
 
         self.menu = Menu(self.window, bg="#535462", fg="white", activebackground="#9d9da4", activeforeground="white")
-        self.menu.add_command(label='Return to Rentals', command=self.go_to_rentals)
+        self.menu.add_command(label='Return to Panel', command=self.go_to_panel)
         self.window.config(menu=self.menu)
 
         # Grid configuration
@@ -200,8 +200,10 @@ class NewRentalPage:
         self.user = user
         self.window.mainloop()
 
-    def go_to_rentals(self):
+    def go_to_panel(self):
         self.window.destroy()
+        from pages.employee.index import Main
+        Main().show_window(self.user)
 
     def get_and_show_movies(self):
         # Get all movies and add them to the treeview

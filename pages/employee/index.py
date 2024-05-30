@@ -64,16 +64,6 @@ class Main:
                                                                                                        columnspan=1,
                                                                                                        sticky="WE")
 
-        self.image5 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/reviews_button.png'))
-        self.image5 = self.image5.resize((200, 200), Image.ANTIALIAS)
-        self.image5 = ImageTk.PhotoImage(self.image5)
-        Label(self.window, image=self.image5, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=0,
-                                                                                                   columnspan=3,
-                                                                                                   sticky="WE")
-        Button(self.window, text='Reviews', font=('Fredoka', 15), command=self.go_to_reviews).grid(row=4, column=1,
-                                                                                                   columnspan=1,
-                                                                                                   sticky="WE")
-
         self.image7 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/logout_button.jpg'))
         self.image7 = self.image7.resize((200, 200), Image.ANTIALIAS)
         self.image7 = ImageTk.PhotoImage(self.image7)
@@ -97,8 +87,8 @@ class Main:
 
     def go_to_new_sale(self):
         self.window.destroy()
-        from pages.employee.sales import SalesPage
-        SalesPage().show_page(self.user)
+        from pages.employee.salerental import NewRentalPage
+        NewRentalPage().show_page(self.user)
 
     def go_to_inventory(self):
         self.window.destroy()
@@ -114,8 +104,3 @@ class Main:
         self.window.destroy()
         from pages.employee.rentals import RentalsPage
         RentalsPage().show_page(self.user)
-
-    def go_to_reviews(self):
-        self.window.destroy()
-        from pages.employee.reviews import ReviewsPage
-        ReviewsPage().show_page(self.user)
