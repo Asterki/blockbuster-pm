@@ -4,6 +4,7 @@ from tkinter import messagebox
 
 from PIL import Image, ImageTk
 
+from definitions import ROOT_DIR
 from models.employees import EmployeeModel
 from services.logger import LoggerService
 
@@ -23,7 +24,7 @@ class LoginPage:
         self.label = Label(self.window, text='Login', font=('Fredoka', 25, "bold"), fg="white", bg="#35374f")
         self.label.grid(row=0, column=0, columnspan=12, sticky="WENS")
 
-        self.image = Image.open(os.path.join(os.path.dirname(__file__), '../public/images/user.png'))
+        self.image = Image.open(os.path.join(ROOT_DIR, './public/images/user.png'))
         self.image = self.image.resize((100, 100), Image.ANTIALIAS)
         self.image = ImageTk.PhotoImage(self.image)
         Label(self.window, image=self.image, bg="#35374f").grid(row=1, column=5, columnspan=2, sticky="WENS")

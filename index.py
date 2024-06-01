@@ -4,6 +4,7 @@ import random
 
 import pandas as pd
 import pyglet
+from tkinter import messagebox
 
 from models.employees import EmployeeModel
 from models.movies import MovieModel
@@ -34,8 +35,10 @@ class Main:
         return self.current_user
 
 
-if __name__ == '__main__e':
-    if input("First time setup? (y/n): ") == 'y':
+if __name__ == '__main__':
+    result = messagebox.askyesno('First time setup', 'First time setup?')
+
+    if result:
         df = pd.read_csv('tmdb_5000_movies.csv')
         for index, row in df.iterrows():
             try:
@@ -56,10 +59,8 @@ if __name__ == '__main__e':
 
         EmployeeModel().create_employee('admin', 'admin', True, '321312', 'admin', 0)
 
+    messagebox.showinfo("Credits", "Hecho por los estudiantes de 12BTP:\nCarlos Flores\nAnny Valdez\nBirthany Vásquez\nMelvin Beltrán\nEmilio Alemán\nAngel Portillo\nOdalys Oliva\nFernando Rivera")
+
     LoginPage().show_window()
 
-if __name__ == '__main__':
-    #SalesModel().get_instance().create_sale(1, 1, 1)
 
-    from pages.employee.rentals import RentalsPage
-    RentalsPage().show_page(user="asterki")
