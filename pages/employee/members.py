@@ -27,6 +27,7 @@ class MembersPage:
                            bg="#35374f")
         self.title.grid(row=0, column=1, sticky="W")
 
+        # Configure the treeview
         self.treeview = ttk.Treeview(self.window)
         self.treeview.grid(row=1, column=1, columnspan=10, sticky="WE")
         self.treeview.bind('<Double-1>', lambda e: self.update_client())
@@ -64,6 +65,7 @@ class MembersPage:
         self.window.mainloop()
 
     def get_and_show_clients(self):
+        # Get all clients and update them
         clients = ClientsModel().get_all_clients()
 
         for i in self.treeview.get_children():
@@ -73,25 +75,31 @@ class MembersPage:
             self.treeview.insert('', 'end', text='', values=client)
 
     def create_client(self):
+        # Ask the user for the new values
         name = simpledialog.askstring('Create Client', 'Enter name')
         phone_number = simpledialog.askstring('Create Client', 'Enter phone number')
         age = simpledialog.askinteger('Create Client', 'Enter age')
         address = simpledialog.askstring('Create Client', 'Enter address')
         email = simpledialog.askstring('Create Client', 'Enter email')
 
+        # Checks if they're all there
         if not name or not phone_number or not age or not address or not email:
             messagebox.showerror('Error', 'All fields are required')
             return
 
+        # Create the user
         ClientsModel().get_instance().create_client(name, phone_number, age, address, email)
-        messagebox.showinfo('Success', 'Client created successfully')
         self.get_and_show_clients()
+
+        # Log the action
+        messagebox.showinfo('Success', 'Client created successfully')
         LoggerService().get_instance().log(self.user, f'Created client {name}')
 
     def update_client(self):
-        selected_item = self.treeview.selection()
+        selected_item = self.treeview.selection()  # Get the selected client
 
         if len(selected_item) == 1 and all(selected_item):
+            # Ask for the new values
             user_id = self.treeview.item(selected_item[0])['values'][0]
             name = simpledialog.askstring('Update Client', 'Enter name')
             phone_number = simpledialog.askstring('Update Client', 'Enter phone number')
@@ -101,14 +109,18 @@ class MembersPage:
             address = simpledialog.askstring('Update Client', 'Enter address')
             email = simpledialog.askstring('Update Client', 'Enter email')
 
+            # Checks
             if not name or not phone_number or not age or not address or not email:
                 messagebox.showerror('Error', 'All fields are required')
                 return
 
+            # Update the user
             ClientsModel().get_instance().update_client(user_id, name, phone_number, rental_count, banned, age, address,
                                                         email)
-            messagebox.showinfo('Success', 'Client updated successfully')
             self.get_and_show_clients()
+
+            # Log the action
+            messagebox.showinfo('Success', 'Client updated successfully')
             LoggerService().get_instance().log(self.user, f'Updated client {name}')
 
         elif len(selected_item) > 1 or len(selected_item) == 0:

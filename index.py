@@ -39,9 +39,10 @@ if __name__ == '__main__':
     result = messagebox.askyesno('First time setup', 'First time setup?')
 
     if result:
-        df = pd.read_csv('tmdb_5000_movies.csv')
+        df = pd.read_csv('tmdb_5000_movies.csv')  # Read the csv file containing the movies
         for index, row in df.iterrows():
             try:
+                # Define each variable to be added to the movie model
                 title = row['title']
                 overview = row['overview']
                 release_date = row['release_date']
@@ -52,13 +53,16 @@ if __name__ == '__main__':
                 price = random.randint(20, 50)
                 stock = random.randint(1, 10)
 
+                # Create each movie given the rows
                 MovieModel().create_movie(title, overview, release_date, genres, director, rating, price_month, price,
                                           stock)
             except IndexError:
                 pass
 
+        # Create the admin user
         EmployeeModel().create_employee('admin', 'admin', True, '321312', 'admin', 0)
 
+    # Portada
     messagebox.showinfo("Credits", "Hecho por los estudiantes de 12BTP:\nCarlos Flores\nAnny Valdez\nBirthany Vásquez\nMelvin Beltrán\nEmilio Alemán\nAngel Portillo\nOdalys Oliva\nFernando Rivera")
 
     LoginPage().show_window()

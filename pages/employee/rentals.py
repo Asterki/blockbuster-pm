@@ -82,6 +82,7 @@ class RentalsPage:
                 rented_by = ClientsModel().get_client(i[2])
                 return_at = datetime.fromtimestamp(i[4])
 
+                # Move the rental to the expired rentals if it's expired
                 if return_at < datetime.now():
                     self.expired_rentals.insert('', 'end', text='',
                                                 values=(i[0], movie[1], rented_by[1], return_at))
@@ -95,14 +96,16 @@ class RentalsPage:
         rental = self.current_rentals.selection()
 
         if rental:
-            RentalsModel().return_rental(rental[0])
+            RentalsModel().delete_rental(rental[0])
             self.current_rentals.delete(rental)
 
 
     def return_expired_rental(self):
         rental = self.expired_rentals.selection()
 
-
+        if rental:
+            RentalsModel().delete_rental(rental[0])
+            self.expired_rentals.delete(rental)
 
     def show_page(self, user):
         self.user = user

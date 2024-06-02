@@ -17,12 +17,14 @@ class Main:
         for i in range(12):
             self.window.columnconfigure(i, weight=1)
 
+        # Title
         Label(self.window, text="Welcome to Blockbuster PM", font=('Fredoka', 25, "bold"), fg="white", bg="#35374f",
               pady=20).grid(
             row=0, column=0,
             columnspan=12,
             sticky="WE")
 
+        # Button images
         self.image1 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/sales_button.png'))
         self.image1 = self.image1.resize((200, 200), Image.ANTIALIAS)
         self.image1 = ImageTk.PhotoImage(self.image1)
