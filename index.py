@@ -63,7 +63,7 @@ if __name__ == '__main__':
         EmployeeModel().create_employee('admin', 'admin', True, '321312', 'admin', 0)
 
     # Portada
-    messagebox.showinfo("Credits", "Hecho por los estudiantes de 12BTP:\nCarlos Flores\nAnny Valdez\nBirthany Vásquez\nMelvin Beltrán\nEmilio Alemán\nAngel Portillo\nOdalys Oliva\nFernando Rivera")
+    messagebox.showinfo("Credits", "Hecho por los estudiantes de 12BTP:\nCarlos Flores\nAnny Valdez\nBrithany Vásquez\nMelvin Beltrán\nEmilio Alemán\nAngel Portillo\nOdalys Oliva\nFernando Rivera")
 
     LoginPage().show_window()
 
