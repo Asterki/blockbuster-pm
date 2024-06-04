@@ -11,7 +11,7 @@ class AdminEmployees:
         self.window = Tk()
         self.window.title('Movie Rental')
         self.window.geometry('900x600')
-        self.window.attributes('-zoomed', True)
+        self.window.attributes('-fullscreen', True)
         self.window.config(bg="#35374f")
         self.user = None
 

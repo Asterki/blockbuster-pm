@@ -14,7 +14,7 @@ class RentalsPage:
         self.window = Tk()
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
-        self.window.attributes('-zoomed', True)
+        self.window.attributes('-fullscreen', True)
         self.window.configure(bg="#35374f")
         self.user = None
 

@@ -27,7 +27,7 @@ class LoginPage:
 
         # Image
         self.image = Image.open(os.path.join(ROOT_DIR, './public/images/user.png'))
-        self.image = self.image.resize((100, 100), Image.ANTIALIAS)
+        self.image = self.image.resize((100, 100), Image.LANCZOS)
         self.image = ImageTk.PhotoImage(self.image)
         Label(self.window, image=self.image, bg="#35374f").grid(row=1, column=5, columnspan=2, sticky="WENS")
 

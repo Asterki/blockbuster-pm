@@ -9,7 +9,7 @@ class AdminMain:
         self.window = Tk()
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
-        self.window.attributes('-zoomed', True)
+        self.window.attributes('-fullscreen', True)
         self.window.configure(bg="#35374f")
         self.user = None
 
@@ -24,7 +24,7 @@ class AdminMain:
 
         # Logs button
         self.image1 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/logs_button.png'))
-        self.image1 = self.image1.resize((200, 200), Image.ANTIALIAS)  # Resize the image
+        self.image1 = self.image1.resize((200, 200), Image.LANCZOS)  # Resize the image
         self.image1 = ImageTk.PhotoImage(self.image1)  # Convert the image to a tkinter image
         Label(self.window, image=self.image1, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=1, column=0, columnspan=3, sticky="WE")
@@ -33,7 +33,7 @@ class AdminMain:
 
         # Employees button
         self.image2 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/employees_button.png'))
-        self.image2 = self.image2.resize((200, 200), Image.ANTIALIAS)
+        self.image2 = self.image2.resize((200, 200), Image.LANCZOS)
         self.image2 = ImageTk.PhotoImage(self.image2)
         Label(self.window, image=self.image2, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=1, column=3, columnspan=3, sticky="WE")
@@ -42,7 +42,7 @@ class AdminMain:
 
         # Movies button
         self.image3 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/movies_button.png'))
-        self.image3 = self.image3.resize((200, 200), Image.ANTIALIAS)
+        self.image3 = self.image3.resize((200, 200), Image.LANCZOS)
         self.image3 = ImageTk.PhotoImage(self.image3)
         Label(self.window, image=self.image3, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=1, column=6, columnspan=3, sticky="WE")
@@ -51,7 +51,7 @@ class AdminMain:
 
         # Rentals button
         self.image4 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/rentals_button.png'))
-        self.image4 = self.image4.resize((200, 200), Image.ANTIALIAS)
+        self.image4 = self.image4.resize((200, 200), Image.LANCZOS)
         self.image4 = ImageTk.PhotoImage(self.image4)
         Label(self.window, image=self.image4, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=1, column=9, columnspan=3, sticky="WE")
@@ -60,7 +60,7 @@ class AdminMain:
 
         # Clients button
         self.image5 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/users_button.png'))
-        self.image5 = self.image5.resize((200, 200), Image.ANTIALIAS)
+        self.image5 = self.image5.resize((200, 200), Image.LANCZOS)
         self.image5 = ImageTk.PhotoImage(self.image5)
         Label(self.window, image=self.image5, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=3, column=0, columnspan=3, sticky="WE")
@@ -69,7 +69,7 @@ class AdminMain:
 
         # Sales button
         self.image6 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/sales_button.png'))
-        self.image6 = self.image6.resize((200, 200), Image.ANTIALIAS)
+        self.image6 = self.image6.resize((200, 200), Image.LANCZOS)
         self.image6 = ImageTk.PhotoImage(self.image6)
         Label(self.window, image=self.image6, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=3, column=3, columnspan=3, sticky="WE")
@@ -78,7 +78,7 @@ class AdminMain:
 
         # Employee Panel button
         self.image7 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/employee_panel_button.png'))
-        self.image7 = self.image7.resize((200, 200), Image.ANTIALIAS)
+        self.image7 = self.image7.resize((200, 200), Image.LANCZOS)
         self.image7 = ImageTk.PhotoImage(self.image7)
         Label(self.window, image=self.image7, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=3, column=6, columnspan=3, sticky="WE")
@@ -87,7 +87,7 @@ class AdminMain:
 
         # Logout button
         self.image8 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/logout_button.jpg'))
-        self.image8 = self.image8.resize((200, 200), Image.ANTIALIAS)
+        self.image8 = self.image8.resize((200, 200), Image.LANCZOS)
         self.image8 = ImageTk.PhotoImage(self.image8)
         Label(self.window, image=self.image8, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
             row=3, column=9, columnspan=3, sticky="WE")

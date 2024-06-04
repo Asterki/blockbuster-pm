@@ -9,7 +9,7 @@ class Main:
         self.window = Tk()
         self.window.title('Movie Rental')
         self.window.geometry('500x500')
-        self.window.attributes('-zoomed', True)
+        self.window.attributes('-fullscreen', True)
         self.window.configure(bg="#35374f")
         self.user = None
 
@@ -26,57 +26,36 @@ class Main:
 
         # Button images
         self.image1 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/sales_button.png'))
-        self.image1 = self.image1.resize((200, 200), Image.ANTIALIAS)
+        self.image1 = self.image1.resize((200, 200), Image.LANCZOS)
         self.image1 = ImageTk.PhotoImage(self.image1)
-        Label(self.window, image=self.image1, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=1, column=0,
-                                                                                                   columnspan=3,
-                                                                                                   sticky="WE")
-        Button(self.window, text='New Sale', font=('Fredoka', 15), command=self.go_to_new_sale).grid(row=2, column=1,
-                                                                                                     columnspan=1,
-                                                                                                     sticky="WE")
-
-        self.image2 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/inventory_button.png'))
-        self.image2 = self.image2.resize((200, 200), Image.ANTIALIAS)
-        self.image2 = ImageTk.PhotoImage(self.image2)
-        Label(self.window, image=self.image2, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=1, column=3,
-                                                                                                   columnspan=3,
-                                                                                                   sticky="WE")
-        Button(self.window, text='See Inventory', font=('Fredoka', 15), command=self.go_to_inventory).grid(row=2,
-                                                                                                           column=4,
-                                                                                                           columnspan=1,
-                                                                                                           sticky="WE")
+        Label(self.window, image=self.image1, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
+            row=1, column=0, columnspan=3, sticky="WE")
+        Button(self.window, text='New Sale', font=('Fredoka', 15), command=self.go_to_new_sale).grid(
+            row=2, column=1, columnspan=1, sticky="WE")
 
         self.image3 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/users_button.png'))
-        self.image3 = self.image3.resize((200, 200), Image.ANTIALIAS)
+        self.image3 = self.image3.resize((200, 200), Image.LANCZOS)
         self.image3 = ImageTk.PhotoImage(self.image3)
-        Label(self.window, image=self.image3, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=1, column=6,
-                                                                                                   columnspan=3,
-                                                                                                   sticky="WE")
-        Button(self.window, text='Members', font=('Fredoka', 15), command=self.go_to_members).grid(row=2, column=7,
-                                                                                                   columnspan=1,
-                                                                                                   sticky="WE")
+        Label(self.window, image=self.image3, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
+            row=1, column=3, columnspan=3, sticky="WE")
+        Button(self.window, text='Members', font=('Fredoka', 15), command=self.go_to_members).grid(
+            row=2, column=4, columnspan=1, sticky="WE")
 
         self.image4 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/rentals_button.png'))
-        self.image4 = self.image4.resize((200, 200), Image.ANTIALIAS)
+        self.image4 = self.image4.resize((200, 200), Image.LANCZOS)
         self.image4 = ImageTk.PhotoImage(self.image4)
-        Label(self.window, image=self.image4, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=1, column=9,
-                                                                                                   columnspan=3,
-                                                                                                   sticky="WE")
-        Button(self.window, text='See Rentals', font=('Fredoka', 15), command=self.go_to_rentals).grid(row=2, column=10,
-                                                                                                       columnspan=1,
-                                                                                                       sticky="WE")
+        Label(self.window, image=self.image4, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
+            row=1, column=6, columnspan=3, sticky="WE")
+        Button(self.window, text='See Rentals', font=('Fredoka', 15), command=self.go_to_rentals).grid(
+            row=2, column=7, columnspan=1, sticky="WE")
 
         self.image7 = Image.open(os.path.join(os.path.dirname(__file__), '../../public/images/logout_button.jpg'))
-        self.image7 = self.image7.resize((200, 200), Image.ANTIALIAS)
+        self.image7 = self.image7.resize((200, 200), Image.LANCZOS)
         self.image7 = ImageTk.PhotoImage(self.image7)
-        Label(self.window, image=self.image7, font=('Fredoka', 20), fg="white", bg="#35374f").grid(row=3, column=9,
-                                                                                                   columnspan=3,
-                                                                                                   sticky="WE")
+        Label(self.window, image=self.image7, font=('Fredoka', 20), fg="white", bg="#35374f").grid(
+            row=1, column=9, columnspan=3, sticky="WE")
         Button(self.window, text='Logout', font=('Fredoka', 15), command=self.logout).grid(
-            row=4,
-            column=10,
-            columnspan=1,
-            sticky="WE")
+            row=2, column=10, columnspan=1, sticky="WE")
 
     def show_window(self, user):
         self.user = user
@@ -91,11 +70,6 @@ class Main:
         self.window.destroy()
         from pages.employee.salerental import NewRentalPage
         NewRentalPage().show_page(self.user)
-
-    def go_to_inventory(self):
-        self.window.destroy()
-        from pages.employee.inventory import InventoryPage
-        InventoryPage().show_page(self.user)
 
     def go_to_members(self):
         self.window.destroy()
